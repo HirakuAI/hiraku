@@ -1,6 +1,6 @@
 {
   "name": "Hiraku AI",
-  "short_name": "Hiraku",
+  "short_name": "WebUI",
   "icons": [
     {
       "src": "/static/web-app-manifest-192x192.png",

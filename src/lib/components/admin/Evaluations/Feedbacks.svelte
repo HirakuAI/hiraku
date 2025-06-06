@@ -65,7 +65,7 @@
 	};
 
 	const shareHandler = async () => {
-		toast.success($i18n.t('Redirecting you to Open WebUI Community'));
+		toast.success($i18n.t('Redirecting you to Hiraku AI Community'));
 
 		// remove snapshot from feedbacks
 		const feedbacksToShare = feedbacks.map((f) => {
@@ -115,7 +115,7 @@
 		<span class="text-lg font-medium text-gray-500 dark:text-gray-300">{feedbacks.length}</span>
 	</div>
 
-	<div>
+	{#if feedbacks.length > 0}
 		<div>
 			<Tooltip content={$i18n.t('Export')}>
 				<button
@@ -128,7 +128,7 @@
 				</button>
 			</Tooltip>
 		</div>
-	</div>
+	{/if}
 </div>
 
 <div
@@ -268,7 +268,7 @@
 					}}
 				>
 					<div class=" self-center mr-2 font-medium line-clamp-1">
-						{$i18n.t('Share to Open WebUI Community')}
+						{$i18n.t('Share to Hiraku AI Community')}
 					</div>
 
 					<div class=" self-center">
