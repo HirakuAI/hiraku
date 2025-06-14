@@ -60,7 +60,7 @@ def get_permissions(
 
     # Combine permissions from all user groups
     for group in user_groups:
-        group_permissions = group.permissions
+        group_permissions = group.permissions or {}
         permissions = combine_permissions(permissions, group_permissions)
 
     # Ensure all fields from default_permissions are present and filled in
@@ -96,7 +96,7 @@ def has_permission(
     user_groups = Groups.get_groups_by_member_id(user_id)
 
     for group in user_groups:
-        group_permissions = group.permissions
+        group_permissions = group.permissions or {}
         if get_permission(group_permissions, permission_hierarchy):
             return True
 
@@ -131,7 +131,7 @@ def get_users_with_access(
     type: str = "write", access_control: Optional[dict] = None
 ) -> List[UserModel]:
     if access_control is None:
-        return Users.get_users()
+        return Users.get_users()["users"]  # Return the users list, not the full response
 
     permission_access = access_control.get(type, {})
     permitted_group_ids = permission_access.get("group_ids", [])

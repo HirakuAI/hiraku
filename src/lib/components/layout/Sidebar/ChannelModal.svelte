@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { getContext, createEventDispatcher, onMount } from 'svelte';
 	import { createNewChannel, deleteChannelById } from '$lib/apis/channels';
+	import { getModels } from '$lib/apis/models';
 
 	import Modal from '$lib/components/common/Modal.svelte';
 	import AccessControl from '$lib/components/workspace/common/AccessControl.svelte';
 	import DeleteConfirmDialog from '$lib/components/common/ConfirmDialog.svelte';
+	import Switch from '$lib/components/common/Switch.svelte';
 
 	import { toast } from 'svelte-sonner';
 	import { page } from '$app/stores';
@@ -20,8 +22,20 @@
 
 	let name = '';
 	let accessControl = {};
+	let bot_enabled = false;
+	let bot_name = 'AI';
+	let bot_model = '';
+	let bot_config = '{}';
 
+	let models = [];
 	let loading = false;
+
+	onMount(async () => {
+		models = (await getModels(localStorage.token)).data;
+		if (models.length > 0 && !bot_model) {
+			bot_model = models[0].id;
+		}
+	});
 
 	$: if (name) {
 		name = name.replace(/\s/g, '-').toLocaleLowerCase();
@@ -29,9 +43,23 @@
 
 	const submitHandler = async () => {
 		loading = true;
+
+		let parsed_bot_config = {};
+		try {
+			parsed_bot_config = JSON.parse(bot_config);
+		} catch (e) {
+			toast.error('Bot config is not a valid JSON object.');
+			loading = false;
+			return;
+		}
+
 		await onSubmit({
 			name: name.replace(/\s/g, '-'),
-			access_control: accessControl
+			access_control: accessControl,
+			bot_enabled,
+			bot_name,
+			bot_model,
+			bot_config: parsed_bot_config
 		});
 		show = false;
 		loading = false;
@@ -40,6 +68,10 @@
 	const init = () => {
 		name = channel.name;
 		accessControl = channel.access_control;
+		bot_enabled = channel.bot_enabled;
+		bot_name = channel.bot_name;
+		bot_model = channel.bot_model;
+		bot_config = JSON.stringify(channel.bot_config ?? {}, null, 2);
 	};
 
 	$: if (channel) {
@@ -68,7 +100,7 @@
 	};
 </script>
 
-<Modal size="sm" bind:show>
+<Modal size="md" bind:show>
 	<div>
 		<div class=" flex justify-between dark:text-gray-300 px-5 pt-4 pb-1">
 			<div class=" text-lg font-medium self-center">
@@ -126,6 +158,55 @@
 					<div class="my-2 -mx-2">
 						<div class="px-3 py-2 bg-gray-50 dark:bg-gray-950 rounded-lg">
 							<AccessControl bind:accessControl />
+						</div>
+					</div>
+
+					<hr class=" border-gray-100 dark:border-gray-700/10 my-2.5 w-full" />
+
+					<div class="my-2 -mx-2">
+						<div class="px-3 py-2 bg-gray-50 dark:bg-gray-950 rounded-lg">
+							<div class="flex flex-col gap-y-2">
+								<div class="flex items-center justify-between">
+									<div class="text-sm font-medium">Enable Bot</div>
+									<Switch bind:value={bot_enabled} />
+								</div>
+								{#if bot_enabled}
+									<div class="flex flex-col gap-y-2">
+										<div class="flex flex-col w-full mt-2">
+											<div class=" mb-1 text-xs text-gray-500">Bot Name</div>
+
+											<div class="flex-1">
+												<input
+													class="w-full text-sm bg-transparent placeholder:text-gray-300 dark:placeholder:text-gray-700 outline-hidden"
+													type="text"
+													bind:value={bot_name}
+													placeholder="E.g. AI"
+													autocomplete="off"
+												/>
+											</div>
+										</div>
+
+										<div class="flex flex-col w-full mt-2">
+											<div class=" mb-1 text-xs text-gray-500">Bot Model</div>
+											<select class="w-full text-sm bg-transparent outline-none" bind:value={bot_model}>
+												{#each models as model}
+													<option value={model.id}>{model.name}</option>
+												{/each}
+											</select>
+										</div>
+
+										<div class="flex flex-col w-full mt-2">
+											<div class=" mb-1 text-xs text-gray-500">Bot Config (JSON)</div>
+											<textarea
+												class="w-full text-sm bg-transparent placeholder:text-gray-300 dark:placeholder:text-gray-700 outline-hidden"
+												bind:value={bot_config}
+												rows="4"
+												placeholder={'{}'}
+											></textarea>
+										</div>
+									</div>
+								{/if}
+							</div>
 						</div>
 					</div>
 

@@ -5,6 +5,10 @@ type ChannelForm = {
 	data?: object;
 	meta?: object;
 	access_control?: object;
+	bot_name?: string;
+	bot_model?: string;
+	bot_enabled?: boolean;
+	bot_config?: object;
 };
 
 export const createNewChannel = async (token: string = '', channel: ChannelForm) => {
@@ -420,6 +424,37 @@ export const deleteMessage = async (token: string = '', channel_id: string, mess
 			}
 		}
 	)
+		.then(async (res) => {
+			if (!res.ok) throw await res.json();
+			return res.json();
+		})
+		.then((json) => {
+			return json;
+		})
+		.catch((err) => {
+			error = err.detail;
+			console.error(err);
+			return null;
+		});
+
+	if (error) {
+		throw error;
+	}
+
+	return res;
+};
+
+export const getChannelUsers = async (token: string = '', channel_id: string) => {
+	let error = null;
+
+	const res = await fetch(`${WEBUI_API_BASE_URL}/channels/${channel_id}/users`, {
+		method: 'GET',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
+			authorization: `Bearer ${token}`
+		}
+	})
 		.then(async (res) => {
 			if (!res.ok) throw await res.json();
 			return res.json();

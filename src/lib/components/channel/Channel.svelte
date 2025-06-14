@@ -249,6 +249,7 @@
 			<div class=" pb-[1rem]">
 				<MessageInput
 					id="root"
+					{channel}
 					{typingUsers}
 					{onChange}
 					onSubmit={submitHandler}

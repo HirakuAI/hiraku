@@ -30,6 +30,11 @@ class Channel(Base):
     meta = Column(JSON, nullable=True)
     access_control = Column(JSON, nullable=True)
 
+    bot_name = Column(Text, nullable=True)
+    bot_model = Column(Text, nullable=True)
+    bot_enabled = Column(Boolean, default=False, nullable=False)
+    bot_config = Column(JSON, nullable=True)
+
     created_at = Column(BigInteger)
     updated_at = Column(BigInteger)
 
@@ -48,6 +53,11 @@ class ChannelModel(BaseModel):
     meta: Optional[dict] = None
     access_control: Optional[dict] = None
 
+    bot_name: Optional[str] = None
+    bot_model: Optional[str] = None
+    bot_enabled: bool = False
+    bot_config: Optional[dict] = None
+
     created_at: int  # timestamp in epoch
     updated_at: int  # timestamp in epoch
 
@@ -63,6 +73,10 @@ class ChannelForm(BaseModel):
     data: Optional[dict] = None
     meta: Optional[dict] = None
     access_control: Optional[dict] = None
+    bot_name: Optional[str] = None
+    bot_model: Optional[str] = None
+    bot_enabled: bool = False
+    bot_config: Optional[dict] = None
 
 
 class ChannelTable:
@@ -121,6 +135,10 @@ class ChannelTable:
             channel.data = form_data.data
             channel.meta = form_data.meta
             channel.access_control = form_data.access_control
+            channel.bot_name = form_data.bot_name
+            channel.bot_model = form_data.bot_model
+            channel.bot_enabled = form_data.bot_enabled
+            channel.bot_config = form_data.bot_config
             channel.updated_at = int(time.time_ns())
 
             db.commit()

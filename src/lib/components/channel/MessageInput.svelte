@@ -6,8 +6,9 @@
 
 	const i18n = getContext('i18n');
 
-	import { config, mobile, settings, socket } from '$lib/stores';
+	import { config, mobile, settings, socket, user as currentUser } from '$lib/stores';
 	import { blobToFile, compressImage } from '$lib/utils';
+	import { getChannelUsers } from '$lib/apis/channels';
 
 	import Tooltip from '../common/Tooltip.svelte';
 	import RichTextInput from '../common/RichTextInput.svelte';
@@ -23,12 +24,16 @@
 	export let transparentBackground = false;
 
 	export let id = null;
+	export let channel = null;
 
 	let draggedOver = false;
+	let mentionQuery = '';
+	let mentionSuggestions = [];
 
 	let recording = false;
 	let content = '';
 	let files = [];
+	let showMentionSuggestion = false;
 
 	let filesInputElement;
 	let inputFiles;
@@ -251,6 +256,7 @@
 
 		content = '';
 		files = [];
+		showMentionSuggestion = false;
 
 		await tick();
 
@@ -261,6 +267,56 @@
 	$: if (content) {
 		onChange();
 	}
+
+	$: if (channel && content.includes('@')) {
+		const lastWord = content.split(' ').pop();
+		if (lastWord.startsWith('@')) {
+			mentionQuery = lastWord.substring(1).toLowerCase();
+			updateMentionSuggestions();
+		} else {
+			showMentionSuggestion = false;
+		}
+	} else {
+		showMentionSuggestion = false;
+	}
+
+	const updateMentionSuggestions = async () => {
+		let users = [];
+		if (channel.bot_enabled && channel.bot_name && channel.bot_name.toLowerCase().startsWith(mentionQuery)) {
+			users.push({ id: 'bot', name: channel.bot_name, role: 'bot', profile_image_url: '' });
+		}
+
+		try {
+			const channelUsers = await getChannelUsers(localStorage.token, channel.id);
+			if (channelUsers && Array.isArray(channelUsers)) {
+				users = [
+					...users,
+					...channelUsers.filter(
+						(user) =>
+							user.name.toLowerCase().startsWith(mentionQuery) && user.id !== $currentUser.id
+					)
+				];
+			}
+		} catch (error) {
+			console.error('Failed to fetch channel users:', error);
+			toast.error($i18n.t('Failed to load user suggestions'));
+		}
+
+		mentionSuggestions = users;
+		showMentionSuggestion = users.length > 0;
+	};
+
+	const applyMention = (userName) => {
+		const words = content.split(' ');
+		words.pop();
+		words.push(`@${userName} `);
+		content = words.join(' ');
+		showMentionSuggestion = false;
+		mentionQuery = '';
+
+		const chatInputElement = document.getElementById(`chat-input-${id}`);
+		chatInputElement?.focus();
+	};
 
 	onMount(async () => {
 		window.setTimeout(() => {
@@ -347,6 +403,40 @@
 				</div>
 
 				<div class="relative">
+					{#if showMentionSuggestion}
+						<div class="absolute bottom-full left-0 right-0 mb-2">
+							<div
+								class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-2 border border-gray-200 dark:border-gray-700"
+							>
+								{#each mentionSuggestions as user}
+								<button
+										class="w-full text-left px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md flex items-center space-x-2"
+										on:click={() => applyMention(user.name)}
+								>
+										{#if user.role === 'bot'}
+											<div class=" self-center">
+												<div
+													class="flex items-center justify-center size-6 text-xl rounded-full bg-gray-300 dark:bg-gray-800"
+												>
+													<div class="size-4">🤖</div>
+												</div>
+											</div>
+										{:else}
+											<div class=" self-center">
+												<Image
+													src={user.profile_image_url}
+													alt={user.name}
+													className="size-6 rounded-full"
+												/>
+											</div>
+										{/if}
+										<div class=" font-medium">{user.name}</div>
+								</button>
+								{/each}
+							</div>
+						</div>
+					{/if}
+
 					<div class=" -mt-5">
 						{#if typingUsers.length > 0}
 							<div class=" text-xs px-4 mb-1">
