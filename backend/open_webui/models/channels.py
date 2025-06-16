@@ -83,23 +83,32 @@ class ChannelTable:
     def insert_new_channel(
         self, type: Optional[str], form_data: ChannelForm, user_id: str
     ) -> Optional[ChannelModel]:
+        print(f"DEBUG: insert_new_channel form_data: {form_data}")
+        print(f"DEBUG: form_data.bot_enabled: {form_data.bot_enabled}")
+        print(f"DEBUG: form_data.bot_name: {form_data.bot_name}")
+        print(f"DEBUG: form_data.bot_model: {form_data.bot_model}")
+        
         with get_db() as db:
-            channel = ChannelModel(
-                **{
-                    **form_data.model_dump(),
-                    "type": type,
-                    "name": form_data.name.lower(),
-                    "id": str(uuid.uuid4()),
-                    "user_id": user_id,
-                    "created_at": int(time.time_ns()),
-                    "updated_at": int(time.time_ns()),
-                }
-            )
+            channel_data = {
+                **form_data.model_dump(),
+                "type": type,
+                "name": form_data.name.lower(),
+                "id": str(uuid.uuid4()),
+                "user_id": user_id,
+                "created_at": int(time.time_ns()),
+                "updated_at": int(time.time_ns()),
+            }
+            print(f"DEBUG: channel_data before ChannelModel: {channel_data}")
+            
+            channel = ChannelModel(**channel_data)
+            print(f"DEBUG: ChannelModel created with bot_enabled: {channel.bot_enabled}, bot_name: {channel.bot_name}, bot_model: {channel.bot_model}")
 
             new_channel = Channel(**channel.model_dump())
+            print(f"DEBUG: Channel DB object created with bot_enabled: {new_channel.bot_enabled}, bot_name: {new_channel.bot_name}, bot_model: {new_channel.bot_model}")
 
             db.add(new_channel)
             db.commit()
+            print(f"DEBUG: Channel committed to DB")
             return channel
 
     def get_channels(self) -> list[ChannelModel]:
@@ -121,7 +130,14 @@ class ChannelTable:
     def get_channel_by_id(self, id: str) -> Optional[ChannelModel]:
         with get_db() as db:
             channel = db.query(Channel).filter(Channel.id == id).first()
-            return ChannelModel.model_validate(channel) if channel else None
+            if channel:
+                print(f"DEBUG: DB channel found - bot_enabled: {channel.bot_enabled}, bot_name: {channel.bot_name}, bot_model: {channel.bot_model}")
+                result = ChannelModel.model_validate(channel)
+                print(f"DEBUG: ChannelModel after validation - bot_enabled: {result.bot_enabled}, bot_name: {result.bot_name}, bot_model: {result.bot_model}")
+                return result
+            else:
+                print(f"DEBUG: No channel found with id: {id}")
+                return None
 
     def update_channel_by_id(
         self, id: str, form_data: ChannelForm
