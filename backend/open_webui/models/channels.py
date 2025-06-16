@@ -90,14 +90,14 @@ class ChannelTable:
         
         with get_db() as db:
             channel_data = {
-                **form_data.model_dump(),
-                "type": type,
-                "name": form_data.name.lower(),
-                "id": str(uuid.uuid4()),
-                "user_id": user_id,
-                "created_at": int(time.time_ns()),
-                "updated_at": int(time.time_ns()),
-            }
+                    **form_data.model_dump(),
+                    "type": type,
+                    "name": form_data.name.lower(),
+                    "id": str(uuid.uuid4()),
+                    "user_id": user_id,
+                    "created_at": int(time.time_ns()),
+                    "updated_at": int(time.time_ns()),
+                }
             print(f"DEBUG: channel_data before ChannelModel: {channel_data}")
             
             channel = ChannelModel(**channel_data)

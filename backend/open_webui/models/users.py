@@ -398,6 +398,12 @@ class UsersTable:
                 return UserModel.model_validate(user)
             else:
                 return None
+                
+    def get_admin_users(self) -> list[UserModel]:
+        """Get all users with 'admin' role"""
+        with get_db() as db:
+            users = db.query(User).filter_by(role="admin").all()
+            return [UserModel.model_validate(user) for user in users]
 
 
 Users = UsersTable()

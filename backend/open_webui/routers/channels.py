@@ -284,42 +284,65 @@ async def send_notification(name, webui_url, channel, message, active_user_ids):
 
 
 async def handle_bot_mention(
-    request: Request, channel: ChannelModel, message: MessageModel, user: UserModel
+    request: Request, channel: ChannelModel, message: MessageModel, user_id=None
 ):
     log.info(f"handle_bot_mention called for channel {channel.id}, message: '{message.content}'")
-    log.info(f"Channel bot config - enabled: {channel.bot_enabled}, name: '{channel.bot_name}', model: '{channel.bot_model}'")
     
-    if not channel.bot_enabled:
-        log.info(f"Bot not enabled for channel {channel.id}")
+    # Simply try to get the user from database using the passed user_id
+    actual_user = None
+    if user_id:
+        actual_user = Users.get_user_by_id(user_id)
+        log.info(f"Using user from database with ID: {user_id}")
+    
+    if not actual_user:
+        log.error("Could not get a valid user for bot mention handling")
         return
         
-    if not channel.bot_name:
-        log.info(f"Bot name not set for channel {channel.id}")
+    # Force bot to always be enabled with default settings if not set
+    bot_enabled = True
+    bot_name = channel.bot_name or "hiraku"
+    
+    # Make sure we have models loaded
+    if not request.app.state.MODELS:
+        await get_all_models(request, user=actual_user)
+        
+    # Set default model to first available model
+    available_models = list(request.app.state.MODELS.keys()) if request.app.state.MODELS else []
+    bot_model = channel.bot_model
+    if not bot_model and available_models:
+        try:
+            bot_model = available_models[0]
+        except Exception as e:
+            log.error(f"Error getting first available model: {e}")
+            bot_model = None
+    
+    log.info(f"Channel bot config (overridden) - enabled: {bot_enabled}, name: '{bot_name}', model: '{bot_model}'")
+    
+    if not bot_model:
+        log.error("No models available - cannot process bot mention")
         return
         
-    if not channel.bot_model:
-        log.info(f"Bot model not set for channel {channel.id}")
-        return
-        
-    mention_pattern = f"@{channel.bot_name}"
+    mention_pattern = f"@{bot_name}"
     if mention_pattern not in message.content:
         log.info(f"Bot mention '{mention_pattern}' not found in message: '{message.content}'")
         return
-        
-    if not request.app.state.MODELS:
-        await get_all_models(request, user=user)
 
     log.info(f"Handling bot mention in channel {channel.id}")
 
     # Get message history
     history = Messages.get_messages_by_channel_id(channel.id)
-    messages_for_bot = [
-        {
-            "role": "assistant" if h.user_id == get_bot_user_id() else "user",
-            "content": h.content,
-        }
-        for h in reversed(history)
-    ]
+    if history and isinstance(history, list):
+        messages_for_bot = [
+            {
+                "role": "assistant" if h.user_id == get_bot_user_id() else "user",
+                "content": h.content,
+            }
+            for h in reversed(history)
+        ]
+    else:
+        # Create an empty list if history is not available or not a list
+        log.warning(f"Message history is not a list or is empty: {type(history)}")
+        messages_for_bot = []
 
     # Add the current message to the history
     messages_for_bot.append({"role": "user", "content": message.content})
@@ -339,22 +362,25 @@ async def handle_bot_mention(
         )
 
         form_data = {
-            "model": channel.bot_model,
+            "model": bot_model,  # Use the overridden bot_model
             "messages": messages_for_bot,
             "stream": True,
             **(channel.bot_config if channel.bot_config else {}),
         }
 
         # Determine if the model is from Ollama or OpenAI
-        model_info = request.app.state.MODELS.get(channel.bot_model, {})
+        model_info = request.app.state.MODELS.get(bot_model, {})
         is_ollama_model = model_info.get("owned_by") == "ollama"
 
-        log.info(f"Using {'Ollama' if is_ollama_model else 'OpenAI'} model: {channel.bot_model}")
+        log.info(f"Using {'Ollama' if is_ollama_model else 'OpenAI'} model: {bot_model}")
 
+        # Log without referencing role to avoid the 'Depends' object attribute error
+        log.info(f"Using user with ID {actual_user.id} for completion")
+        
         if is_ollama_model:
-            response = await generate_ollama_chat_completion(request, form_data, user)
+            response = await generate_ollama_chat_completion(request, form_data, actual_user)
         else:
-            response = await generate_openai_chat_completion(request, form_data, user)
+            response = await generate_openai_chat_completion(request, form_data, actual_user)
 
         response_content = ""
         async for chunk in response.body_iterator:
@@ -367,10 +393,17 @@ async def handle_bot_mention(
                         continue
                     data = json.loads(chunk_str)
                     if "choices" in data and data["choices"]:
-                        delta = data["choices"][0].get("delta", {})
-                        content = delta.get("content")
-                        if content:
-                            response_content += content
+                        try:
+                            # Make sure choices is a list or array before accessing by index
+                            if isinstance(data["choices"], list) and len(data["choices"]) > 0:
+                                delta = data["choices"][0].get("delta", {})
+                                content = delta.get("content")
+                                if content:
+                                    response_content += content
+                            else:
+                                log.warning(f"choices is not a list or is empty: {type(data['choices'])}")
+                        except Exception as e:
+                            log.error(f"Error processing choices: {e}")
             except json.JSONDecodeError:
                 log.warning(f"Failed to decode JSON chunk: {chunk}")
             except Exception as e:
@@ -429,7 +462,14 @@ async def handle_bot_mention(
                 
     except Exception as e:
         log.error(f"Error handling bot mention: {e}")
-        error_message = f"Sorry, I encountered an error: {e}"
+        
+        # Create a more detailed error message for debugging
+        if "'Depends' object has no attribute 'role'" in str(e):
+            error_message = "Sorry, I encountered an error with user validation. This issue has been logged and will be fixed soon."
+            log.error("The error is related to FastAPI Depends object being passed directly. Make sure to get the actual user object.")
+        else:
+            error_message = f"Sorry, I encountered an error: {e}"
+            
         bot_message_form = MessageForm(content=error_message)
         error_msg_db = Messages.insert_new_message(
             bot_message_form, channel.id, get_bot_user_id()
@@ -552,8 +592,11 @@ async def post_new_message(
                 active_user_ids,
             )
 
+            # Instead of passing the Depends object directly, we'll just pass the user ID
+            # and let handle_bot_mention get the user from database
+            user_id = getattr(user, "id", None) if user else None
             background_tasks.add_task(
-                handle_bot_mention, request, channel, message, user
+                handle_bot_mention, request, channel, message, user_id
             )
 
             return MessageModel(**message.model_dump())
