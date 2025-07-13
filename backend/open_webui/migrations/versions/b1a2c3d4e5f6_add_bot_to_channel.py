@@ -2,7 +2,7 @@
 
 Revision ID: b1a2c3d4e5f6
 Revises: 9f0c9cd09105
-Create Date: 2024-07-16 12:00:00.000000
+Create Date: 2025-07-14 12:00:00.000000
 
 """
 
@@ -22,7 +22,7 @@ def upgrade():
     op.add_column("channel", sa.Column("bot_name", sa.Text(), nullable=True))
     op.add_column("channel", sa.Column("bot_model", sa.Text(), nullable=True))
     op.add_column(
-        "channel", sa.Column("bot_enabled", sa.Boolean(), nullable=False, server_default=sa.text('false'))
+        "channel", sa.Column("bot_enabled", sa.Boolean(), nullable=False, server_default=sa.text('true'))
     )
     op.add_column("channel", sa.Column("bot_config", sa.JSON(), nullable=True))
 
