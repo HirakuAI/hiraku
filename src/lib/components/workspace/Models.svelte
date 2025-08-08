@@ -98,7 +98,7 @@
 	const shareModelHandler = async (model) => {
 		toast.success($i18n.t('Redirecting you to Hiraku AI Community'));
 
-		const url = 'https://openwebui.com';
+		const url = 'https://bontal.net';
 
 		const tab = await window.open(`${url}/models/create`, '_blank');
 
@@ -552,7 +552,7 @@
 
 			<a
 				class=" flex cursor-pointer items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-850 w-full mb-2 px-3.5 py-1.5 rounded-xl transition"
-				href="https://openwebui.com/#hiraku-ai-community"
+				href="https://bontal.net/#hiraku-ai-community"
 				target="_blank"
 			>
 				<div class=" self-center">

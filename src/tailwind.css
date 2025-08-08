@@ -20,38 +20,50 @@
 	}
 }
 
-/* New palette overrides and global square corners */
+/* Vibrant gradient palette and global square corners */
 @layer base {
-  /* Override gray palette (light mode) - High contrast */
+  /* Vibrant color palette with purple-violet-red-orange theme */
   :root {
-    --color-gray-50: #ffffff;
-    --color-gray-100: #f8f9fa;
-    --color-gray-200: #e9ecef;
-    --color-gray-300: #dee2e6;
-    --color-gray-400: #6c757d;
-    --color-gray-500: #495057;
-    --color-gray-600: #343a40;
-    --color-gray-700: #212529;
-    --color-gray-800: #1a1d20;
-    --color-gray-850: #151719;
-    --color-gray-900: #0f1113;
-    --color-gray-950: #000000;
+    --color-gray-50: #fefefe;
+    --color-gray-100: #f9f7ff;
+    --color-gray-200: #f3f0ff;
+    --color-gray-300: #e9e5ff;
+    --color-gray-400: #c4b5fd;
+    --color-gray-500: #a78bfa;
+    --color-gray-600: #8b5cf6;
+    --color-gray-700: #7c3aed;
+    --color-gray-800: #6d28d9;
+    --color-gray-850: #5b21b6;
+    --color-gray-900: #4c1d95;
+    --color-gray-950: #2e1065;
+    
+    /* Gradient colors */
+    --gradient-start: #8b5cf6;
+    --gradient-middle: #ec4899;
+    --gradient-end: #f97316;
+    --gradient-accent: #ef4444;
   }
 
-  /* Override gray palette (dark mode) - High contrast */
+  /* Dark mode with deeper purples and vibrant accents */
   .dark {
-    --color-gray-50: #ffffff;
-    --color-gray-100: #f8f9fa;
-    --color-gray-200: #e9ecef;
-    --color-gray-300: #ced4da;
-    --color-gray-400: #adb5bd;
-    --color-gray-500: #6c757d;
-    --color-gray-600: #495057;
-    --color-gray-700: #343a40;
-    --color-gray-800: #212529;
-    --color-gray-850: #1a1d20;
-    --color-gray-900: #0f1113;
-    --color-gray-950: #000000;
+    --color-gray-50: #fefefe;
+    --color-gray-100: #f5f3ff;
+    --color-gray-200: #ede9fe;
+    --color-gray-300: #ddd6fe;
+    --color-gray-400: #c4b5fd;
+    --color-gray-500: #a78bfa;
+    --color-gray-600: #8b5cf6;
+    --color-gray-700: #7c3aed;
+    --color-gray-800: #1a0f2e;
+    --color-gray-850: #140a26;
+    --color-gray-900: #0f081f;
+    --color-gray-950: #0a0514;
+    
+    /* Dark mode gradients */
+    --gradient-start: #6366f1;
+    --gradient-middle: #d946ef;
+    --gradient-end: #f59e0b;
+    --gradient-accent: #ef4444;
   }
 
   /* Force square corners everywhere */
@@ -82,6 +94,49 @@
   
   .dark .text-gray-500 {
     color: var(--color-gray-400) !important;
+  }
+
+  /* Gradient background effects */
+  body {
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-middle) 50%, var(--gradient-end) 100%);
+    min-height: 100vh;
+  }
+
+  /* Glass-morphism effect for main containers */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .dark .glass-effect {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Animated gradient overlays */
+  .gradient-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+      var(--gradient-start) 0%, 
+      var(--gradient-middle) 25%, 
+      var(--gradient-end) 50%, 
+      var(--gradient-accent) 75%, 
+      var(--gradient-start) 100%);
+    opacity: 0.1;
+    pointer-events: none;
+    animation: gradientShift 8s ease-in-out infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { opacity: 0.1; transform: translateX(0%); }
+    50% { opacity: 0.2; transform: translateX(10%); }
   }
 }
 

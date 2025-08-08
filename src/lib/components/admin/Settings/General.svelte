@@ -184,37 +184,14 @@
 
 							<a
 								class="flex-shrink-0 text-xs font-medium underline"
-								href="https://docs.openwebui.com/"
+								href="https://bontal.net/404/"
 								target="_blank"
 							>
 								{$i18n.t('Documentation')}
 							</a>
 						</div>
 
-						<div class="mt-1">
-							<div class="flex space-x-1">
-								<a href="https://discord.gg/5rJgQTnV4s" target="_blank">
-									<img
-										alt="Discord"
-										src="https://img.shields.io/badge/Discord-Open_WebUI-blue?logo=discord&logoColor=white"
-									/>
-								</a>
-
-								<a href="https://twitter.com/OpenWebUI" target="_blank">
-									<img
-										alt="X (formerly Twitter) Follow"
-										src="https://img.shields.io/twitter/follow/OpenWebUI"
-									/>
-								</a>
-
-								<a href="https://github.com/hiraku-ai/hiraku-ai" target="_blank">
-									<img
-										alt="Github Repo"
-										src="https://img.shields.io/github/stars/hiraku-ai/hiraku-ai?style=social&label=Star us on Github"
-									/>
-								</a>
-							</div>
-						</div>
+						
 					</div>
 
 					<div class="mb-2.5">
@@ -226,7 +203,7 @@
 
 								{#if $config?.license_metadata}
 									<a
-										href="https://docs.openwebui.com/enterprise"
+										href="https://bontal.net/404/enterprise"
 										target="_blank"
 										class="text-gray-500 mt-0.5"
 									>
@@ -251,7 +228,7 @@
 								{:else}
 									<a
 										class=" text-xs hover:underline"
-										href="https://docs.openwebui.com/enterprise"
+										href="https://bontal.net/404/enterprise"
 										target="_blank"
 									>
 										<span class="text-gray-500">
@@ -360,9 +337,9 @@
 								/>
 
 								<div class="mt-2 text-xs text-gray-400 dark:text-gray-500">
-									<!-- https://docs.openwebui.com/getting-started/advanced-topics/api-endpoints -->
+									<!-- https://bontal.net/404/getting-started/advanced-topics/api-endpoints -->
 									<a
-										href="https://docs.openwebui.com/getting-started/api-endpoints"
+										href="https://bontal.net/404/getting-started/api-endpoints"
 										target="_blank"
 										class=" text-gray-300 font-medium underline"
 									>

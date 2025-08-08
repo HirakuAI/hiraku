@@ -168,7 +168,7 @@
 					class="flex gap-2 items-center py-1.5 px-3 text-sm  cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md"
 					id="chat-share-button"
 					on:click={() => {
-						window.open('https://docs.openwebui.com', '_blank');
+						window.open('https://bontal.net/404', '_blank');
 					}}
 				>
 					<QuestionMarkCircle className="size-5" />

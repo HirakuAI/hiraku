@@ -292,7 +292,7 @@
 				'aboutus',
 				'softwareinfo',
 				'timothyjaeryangbaek',
-				'openwebui',
+				'hiraku',
 				'release',
 				'updates',
 				'updateinfo',
