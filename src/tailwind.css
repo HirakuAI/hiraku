@@ -49,14 +49,15 @@
 
   /* Dark mode neutrals */
   .dark {
-    --color-gray-50: #e5e7eb;  /* readable text on dark */
-    --color-gray-100: #d1d5db;
-    --color-gray-200: #9ca3af;
-    --color-gray-300: #6b7280;
-    --color-gray-400: #4b5563;
-    --color-gray-500: #374151;
-    --color-gray-600: #1f2937;
-    --color-gray-700: #111827;
+    /* Keep text grays light for contrast on dark background */
+    --color-gray-50: #f8fafc;
+    --color-gray-100: #f1f5f9;
+    --color-gray-200: #e2e8f0;
+    --color-gray-300: #cbd5e1;
+    --color-gray-400: #94a3b8;
+    --color-gray-500: #64748b;
+    --color-gray-600: #475569;
+    --color-gray-700: #334155;
     --color-gray-800: #0b1220; /* dark bg */
     --color-gray-850: #0a0f1a;
     --color-gray-900: #080d16;
@@ -65,7 +66,7 @@
     --gradient-start: #334155; /* slate-700 */
     --gradient-middle: #1f2937; /* slate-800 */
     --gradient-end: #0b1220;   /* dark bg */
-    --gradient-accent: #64748b; /* slate-500 */
+    --gradient-accent: #94a3b8; /* lighter accent for contrast */
 
     --app-bg: #0b1220; /* dark */
   }
@@ -93,18 +94,55 @@
   }
   
   .text-gray-500 {
-    color: var(--color-gray-600) !important;
+    color: var(--color-gray-700) !important;
   }
   
   .dark .text-gray-500 {
-    color: var(--color-gray-400) !important;
+    color: var(--color-gray-200) !important;
   }
+
+  .text-gray-600 { color: var(--color-gray-800) !important; }
+  .dark .text-gray-600 { color: var(--color-gray-300) !important; }
+
+  /* Bump low-contrast utility classes */
+  .text-gray-400 { color: var(--color-gray-700) !important; }
+  .text-gray-300 { color: var(--color-gray-700) !important; }
+  .dark .text-gray-400 { color: var(--color-gray-200) !important; }
+  .dark .text-gray-300 { color: var(--color-gray-200) !important; }
+
+  /* Accessible link colors */
+  a { color: var(--color-gray-900); }
+  .dark a { color: var(--color-gray-50); }
 
   /* Solid, low-strain background */
   body {
     background: var(--app-bg);
     min-height: 100vh;
   }
+
+  /* High-contrast text selection */
+  ::selection {
+    background: var(--color-gray-700);
+    color: var(--color-gray-50);
+  }
+  .dark ::selection {
+    background: var(--color-gray-300);
+    color: var(--color-gray-900);
+  }
+
+  /* Placeholder contrast */
+  ::placeholder { color: var(--color-gray-600); opacity: 1; }
+  .dark ::placeholder { color: var(--color-gray-300); opacity: 1; }
+
+  /* Prose content contrast */
+  .prose, .markdown-prose, .input-prose, .input-prose-sm { color: var(--color-gray-900); }
+  .dark .prose, .dark .markdown-prose, .dark .input-prose, .dark .input-prose-sm { color: var(--color-gray-50); }
+
+  /* Link states */
+  a { color: var(--color-gray-900); }
+  a:hover { color: var(--color-gray-700); }
+  .dark a { color: var(--color-gray-50); }
+  .dark a:hover { color: var(--color-gray-200); }
 
   /* Glass-morphism effect for main containers */
   .glass-effect {
