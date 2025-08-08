@@ -18,14 +18,14 @@
 		console.log(data);
 
 		const manifest = extractFrontmatter(data.content);
-		if (compareVersion(manifest?.required_open_webui_version ?? '0.0.0', WEBUI_VERSION)) {
+		if (compareVersion(manifest?.required_hiraku_version ?? '0.0.0', WEBUI_VERSION)) {
 			console.log('Version is lower than required');
 			toast.error(
 				$i18n.t(
-					'Hiraku AI version (v{{OPEN_WEBUI_VERSION}}) is lower than required version (v{{REQUIRED_VERSION}})',
+					'Hiraku AI version (v{{HIRAKU_VERSION}}) is lower than required version (v{{REQUIRED_VERSION}})',
 					{
-						OPEN_WEBUI_VERSION: WEBUI_VERSION,
-						REQUIRED_VERSION: manifest?.required_open_webui_version ?? '0.0.0'
+						HIRAKU_VERSION: WEBUI_VERSION,
+						REQUIRED_VERSION: manifest?.required_hiraku_version ?? '0.0.0'
 					}
 				)
 			);

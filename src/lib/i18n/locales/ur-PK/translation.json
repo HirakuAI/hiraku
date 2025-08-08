@@ -905,7 +905,7 @@
 	"Hiraku AI can use tools provided by any OpenAPI server.": "",
 	"Hiraku AI uses faster-whisper internally.": "اوپن ویب یو آئی اندرونی طور پر فاسٹر وِسپر استعمال کرتا ہے",
 	"Hiraku AI uses SpeechT5 and CMU Arctic speaker embeddings.": "",
-	"Hiraku AI version (v{{OPEN_WEBUI_VERSION}}) is lower than required version (v{{REQUIRED_VERSION}})": "اوپن WebUI ورژن (v{{OPEN_WEBUI_VERSION}}) مطلوبہ ورژن (v{{REQUIRED_VERSION}}) سے کم ہے",
+	"Hiraku AI version (v{{HIRAKU_VERSION}}) is lower than required version (v{{REQUIRED_VERSION}})": "اوپن WebUI ورژن (v{{HIRAKU_VERSION}}) مطلوبہ ورژن (v{{REQUIRED_VERSION}}) سے کم ہے",
 	"OpenAI": "اوپن اے آئی",
 	"OpenAI API": "اوپن اے آئی اے پی آئی\n",
 	"OpenAI API Config": "اوپن اے آئی API ترتیب",

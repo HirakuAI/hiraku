@@ -905,7 +905,7 @@
 	"Hiraku AI can use tools provided by any OpenAPI server.": "Az Hiraku AI bármely OpenAPI szerver által biztosított eszközöket használhat.",
 	"Hiraku AI uses faster-whisper internally.": "Az Hiraku AI belsőleg a faster-whispert használja.",
 	"Hiraku AI uses SpeechT5 and CMU Arctic speaker embeddings.": "Az Hiraku AI a SpeechT5-öt és a CMU Arctic hangszóró beágyazásokat használja.",
-	"Hiraku AI version (v{{OPEN_WEBUI_VERSION}}) is lower than required version (v{{REQUIRED_VERSION}})": "Az Hiraku AI verzió (v{{OPEN_WEBUI_VERSION}}) alacsonyabb, mint a szükséges verzió (v{{REQUIRED_VERSION}})",
+	"Hiraku AI version (v{{HIRAKU_VERSION}}) is lower than required version (v{{REQUIRED_VERSION}})": "Az Hiraku AI verzió (v{{HIRAKU_VERSION}}) alacsonyabb, mint a szükséges verzió (v{{REQUIRED_VERSION}})",
 	"OpenAI": "OpenAI",
 	"OpenAI API": "OpenAI API",
 	"OpenAI API Config": "OpenAI API konfiguráció",

@@ -905,7 +905,7 @@
 	"Hiraku AI can use tools provided by any OpenAPI server.": "Hiraku AI 可使用任何 OpenAPI 伺服器提供的工具。",
 	"Hiraku AI uses faster-whisper internally.": "Hiraku AI 使用內部 faster-whisper。",
 	"Hiraku AI uses SpeechT5 and CMU Arctic speaker embeddings.": "Hiraku AI 使用 SpeechT5 和 CMU Arctic 說話者嵌入。",
-	"Hiraku AI version (v{{OPEN_WEBUI_VERSION}}) is lower than required version (v{{REQUIRED_VERSION}})": "Hiraku AI 版本 (v{{OPEN_WEBUI_VERSION}}) 低於所需版本 (v{{REQUIRED_VERSION}})",
+	"Hiraku AI version (v{{HIRAKU_VERSION}}) is lower than required version (v{{REQUIRED_VERSION}})": "Hiraku AI 版本 (v{{HIRAKU_VERSION}}) 低於所需版本 (v{{REQUIRED_VERSION}})",
 	"OpenAI": "OpenAI",
 	"OpenAI API": "OpenAI API",
 	"OpenAI API Config": "OpenAI API 設定",
