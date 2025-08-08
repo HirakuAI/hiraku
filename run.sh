@@ -1,7 +1,7 @@
 #!/bin/bash
 
-image_name="open-webui"
-container_name="open-webui"
+image_name="hiraku-ai"
+container_name="hiraku-ai"
 host_port=3000
 container_port=8080
 

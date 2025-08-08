@@ -3,7 +3,7 @@
 	import { toast } from 'svelte-sonner';
 
 	import {
-		WEBUI_NAME,
+		HIRAKU_NAME,
 		banners,
 		chatId,
 		config,
@@ -33,7 +33,7 @@
 	const i18n = getContext('i18n');
 
 	export let initNewChat: Function;
-	export let title: string = $WEBUI_NAME;
+	export let title: string = $HIRAKU_NAME;
 	export let shareEnabled: boolean = false;
 
 	export let chat;

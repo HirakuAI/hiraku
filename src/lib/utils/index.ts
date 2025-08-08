@@ -12,7 +12,7 @@ dayjs.extend(isToday);
 dayjs.extend(isYesterday);
 dayjs.extend(localizedFormat);
 
-import { WEBUI_BASE_URL } from '$lib/constants';
+import { HIRAKU_BASE_URL } from '$lib/constants';
 import { TTS_RESPONSE_SPLIT } from '$lib/types';
 
 import { marked } from 'marked';
@@ -37,7 +37,7 @@ export const replaceTokens = (content, sourceIds, char, user) => {
 		{
 			regex: /{{VIDEO_FILE_ID_([a-f0-9-]+)}}/gi,
 			replacement: (_, fileId) =>
-				`<video src="${WEBUI_BASE_URL}/api/v1/files/${fileId}/content" controls></video>`
+				`<video src="${HIRAKU_BASE_URL}/api/v1/files/${fileId}/content" controls></video>`
 		},
 		{
 			regex: /{{HTML_FILE_ID_([a-f0-9-]+)}}/gi,

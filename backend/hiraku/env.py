@@ -105,11 +105,11 @@ for source in log_sources:
 
 log.setLevel(SRC_LOG_LEVELS["CONFIG"])
 
-WEBUI_NAME = os.environ.get("WEBUI_NAME", "Hiraku AI")
-if WEBUI_NAME != "Hiraku AI":
-    WEBUI_NAME += " (Hiraku AI)"
+HIRAKU_NAME = os.environ.get("HIRAKU_NAME", "Hiraku AI")
+if HIRAKU_NAME != "Hiraku AI":
+    HIRAKU_NAME += " (Hiraku AI)"
 
-WEBUI_FAVICON_URL = "https://openwebui.com/favicon.png"
+HIRAKU_FAVICON_URL = "https://openwebui.com/favicon.png"
 
 TRUSTED_SIGNATURE_KEY = os.environ.get("TRUSTED_SIGNATURE_KEY", "")
 
@@ -122,7 +122,7 @@ ENV = os.environ.get("ENV", "dev")
 FROM_INIT_PY = os.environ.get("FROM_INIT_PY", "False").lower() == "true"
 
 if FROM_INIT_PY:
-    PACKAGE_DATA = {"version": importlib.metadata.version("open-webui")}
+    PACKAGE_DATA = {"version": importlib.metadata.version("hiraku-ai")}
 else:
     try:
         PACKAGE_DATA = json.loads((BASE_DIR / "package.json").read_text())
@@ -206,10 +206,10 @@ ENABLE_FORWARD_USER_INFO_HEADERS = (
 )
 
 ####################################
-# WEBUI_BUILD_HASH
+# HIRAKU_BUILD_HASH
 ####################################
 
-WEBUI_BUILD_HASH = os.environ.get("WEBUI_BUILD_HASH", "dev-build")
+HIRAKU_BUILD_HASH = os.environ.get("HIRAKU_BUILD_HASH", "dev-build")
 
 ####################################
 # DATA/FRONTEND BUILD DIR
@@ -341,16 +341,16 @@ except ValueError:
     log.info(f"Invalid UVICORN_WORKERS value, defaulting to {UVICORN_WORKERS}")
 
 ####################################
-# WEBUI_AUTH (Required for security)
+# HIRAKU_AUTH (Required for security)
 ####################################
 
-WEBUI_AUTH = os.environ.get("WEBUI_AUTH", "True").lower() == "true"
-WEBUI_AUTH_TRUSTED_EMAIL_HEADER = os.environ.get(
-    "WEBUI_AUTH_TRUSTED_EMAIL_HEADER", None
+HIRAKU_AUTH = os.environ.get("HIRAKU_AUTH", "True").lower() == "true"
+HIRAKU_AUTH_TRUSTED_EMAIL_HEADER = os.environ.get(
+    "HIRAKU_AUTH_TRUSTED_EMAIL_HEADER", None
 )
-WEBUI_AUTH_TRUSTED_NAME_HEADER = os.environ.get("WEBUI_AUTH_TRUSTED_NAME_HEADER", None)
-WEBUI_AUTH_TRUSTED_GROUPS_HEADER = os.environ.get(
-    "WEBUI_AUTH_TRUSTED_GROUPS_HEADER", None
+HIRAKU_AUTH_TRUSTED_NAME_HEADER = os.environ.get("HIRAKU_AUTH_TRUSTED_NAME_HEADER", None)
+HIRAKU_AUTH_TRUSTED_GROUPS_HEADER = os.environ.get(
+    "HIRAKU_AUTH_TRUSTED_GROUPS_HEADER", None
 )
 
 
@@ -358,40 +358,40 @@ BYPASS_MODEL_ACCESS_CONTROL = (
     os.environ.get("BYPASS_MODEL_ACCESS_CONTROL", "False").lower() == "true"
 )
 
-WEBUI_AUTH_SIGNOUT_REDIRECT_URL = os.environ.get(
-    "WEBUI_AUTH_SIGNOUT_REDIRECT_URL", None
+HIRAKU_AUTH_SIGNOUT_REDIRECT_URL = os.environ.get(
+    "HIRAKU_AUTH_SIGNOUT_REDIRECT_URL", None
 )
 
 ####################################
-# WEBUI_SECRET_KEY
+# HIRAKU_SECRET_KEY
 ####################################
 
-WEBUI_SECRET_KEY = os.environ.get(
-    "WEBUI_SECRET_KEY",
+HIRAKU_SECRET_KEY = os.environ.get(
+    "HIRAKU_SECRET_KEY",
     os.environ.get(
-        "WEBUI_JWT_SECRET_KEY", "t0p-s3cr3t"
+        "HIRAKU_JWT_SECRET_KEY", "t0p-s3cr3t"
     ),  # DEPRECATED: remove at next major version
 )
 
-WEBUI_SESSION_COOKIE_SAME_SITE = os.environ.get("WEBUI_SESSION_COOKIE_SAME_SITE", "lax")
+HIRAKU_SESSION_COOKIE_SAME_SITE = os.environ.get("HIRAKU_SESSION_COOKIE_SAME_SITE", "lax")
 
-WEBUI_SESSION_COOKIE_SECURE = (
-    os.environ.get("WEBUI_SESSION_COOKIE_SECURE", "false").lower() == "true"
+HIRAKU_SESSION_COOKIE_SECURE = (
+    os.environ.get("HIRAKU_SESSION_COOKIE_SECURE", "false").lower() == "true"
 )
 
-WEBUI_AUTH_COOKIE_SAME_SITE = os.environ.get(
-    "WEBUI_AUTH_COOKIE_SAME_SITE", WEBUI_SESSION_COOKIE_SAME_SITE
+HIRAKU_AUTH_COOKIE_SAME_SITE = os.environ.get(
+    "HIRAKU_AUTH_COOKIE_SAME_SITE", HIRAKU_SESSION_COOKIE_SAME_SITE
 )
 
-WEBUI_AUTH_COOKIE_SECURE = (
+HIRAKU_AUTH_COOKIE_SECURE = (
     os.environ.get(
-        "WEBUI_AUTH_COOKIE_SECURE",
-        os.environ.get("WEBUI_SESSION_COOKIE_SECURE", "false"),
+        "HIRAKU_AUTH_COOKIE_SECURE",
+        os.environ.get("HIRAKU_SESSION_COOKIE_SECURE", "false"),
     ).lower()
     == "true"
 )
 
-if WEBUI_AUTH and WEBUI_SECRET_KEY == "":
+if HIRAKU_AUTH and HIRAKU_SECRET_KEY == "":
     raise ValueError(ERROR_MESSAGES.ENV_VAR_NOT_FOUND)
 
 ENABLE_WEBSOCKET_SUPPORT = (
@@ -540,7 +540,7 @@ ENABLE_OTEL = os.environ.get("ENABLE_OTEL", "False").lower() == "true"
 OTEL_EXPORTER_OTLP_ENDPOINT = os.environ.get(
     "OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317"
 )
-OTEL_SERVICE_NAME = os.environ.get("OTEL_SERVICE_NAME", "open-webui")
+OTEL_SERVICE_NAME = os.environ.get("OTEL_SERVICE_NAME", "hiraku-ai")
 OTEL_RESOURCE_ATTRIBUTES = os.environ.get(
     "OTEL_RESOURCE_ATTRIBUTES", ""
 )  # e.g. key1=val1,key2=val2

@@ -32,7 +32,7 @@ class ExternalWebLoader(BaseLoader):
                 response = requests.post(
                     self.external_url,
                     headers={
-                        "User-Agent": "Hiraku AI (https://github.com/open-webui/open-webui) External Web Loader",
+                        "User-Agent": "Hiraku AI (https://github.com/hiraku-ai/hiraku-ai) External Web Loader",
                         "Authorization": f"Bearer {self.external_api_key}",
                     },
                     json={

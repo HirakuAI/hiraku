@@ -155,7 +155,7 @@ jobs:
       - name: Test backend with SQLite
         id: sqlite
         env:
-          WEBUI_SECRET_KEY: secret-key
+          HIRAKU_SECRET_KEY: secret-key
           GLOBAL_LOG_LEVEL: debug
         run: |
           cd backend
@@ -181,7 +181,7 @@ jobs:
       - name: Test backend with Postgres
         if: success() || steps.sqlite.conclusion == 'failure'
         env:
-          WEBUI_SECRET_KEY: secret-key
+          HIRAKU_SECRET_KEY: secret-key
           GLOBAL_LOG_LEVEL: debug
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
           DATABASE_POOL_SIZE: 10
@@ -230,7 +230,7 @@ jobs:
 #      - name: Test backend with MySQL
 #        if: success() || steps.sqlite.conclusion == 'failure' || steps.postgres.conclusion == 'failure'
 #        env:
-#          WEBUI_SECRET_KEY: secret-key
+#          HIRAKU_SECRET_KEY: secret-key
 #          GLOBAL_LOG_LEVEL: debug
 #          DATABASE_URL: mysql://root:mysql@localhost:3306/mysql
 #        run: |

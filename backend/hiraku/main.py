@@ -291,9 +291,9 @@ from hiraku.config import (
     EXTERNAL_WEB_LOADER_URL,
     EXTERNAL_WEB_LOADER_API_KEY,
     # WebUI
-    WEBUI_AUTH,
-    WEBUI_NAME,
-    WEBUI_BANNERS,
+    HIRAKU_AUTH,
+    HIRAKU_NAME,
+    HIRAKU_BANNERS,
     WEBHOOK_URL,
     ADMIN_EMAIL,
     SHOW_ADMIN_DETAILS,
@@ -349,7 +349,7 @@ from hiraku.config import (
     CORS_ALLOW_ORIGIN,
     DEFAULT_LOCALE,
     OAUTH_PROVIDERS,
-    WEBUI_URL,
+    HIRAKU_URL,
     RESPONSE_WATERMARK,
     # Admin
     ENABLE_ADMIN_CHAT_ACCESS,
@@ -384,13 +384,13 @@ from hiraku.env import (
     SAFE_MODE,
     SRC_LOG_LEVELS,
     VERSION,
-    WEBUI_BUILD_HASH,
-    WEBUI_SECRET_KEY,
-    WEBUI_SESSION_COOKIE_SAME_SITE,
-    WEBUI_SESSION_COOKIE_SECURE,
-    WEBUI_AUTH_TRUSTED_EMAIL_HEADER,
-    WEBUI_AUTH_TRUSTED_NAME_HEADER,
-    WEBUI_AUTH_SIGNOUT_REDIRECT_URL,
+    HIRAKU_BUILD_HASH,
+    HIRAKU_SECRET_KEY,
+    HIRAKU_SESSION_COOKIE_SAME_SITE,
+    HIRAKU_SESSION_COOKIE_SECURE,
+    HIRAKU_AUTH_TRUSTED_EMAIL_HEADER,
+    HIRAKU_AUTH_TRUSTED_NAME_HEADER,
+    HIRAKU_AUTH_SIGNOUT_REDIRECT_URL,
     ENABLE_WEBSOCKET_SUPPORT,
     BYPASS_MODEL_ACCESS_CONTROL,
     RESET_CONFIG_ON_START,
@@ -469,8 +469,8 @@ print(
 
 
 v{VERSION} - building the best AI user interface.
-{f"Commit: {WEBUI_BUILD_HASH}" if WEBUI_BUILD_HASH != "dev-build" else ""}
-https://github.com/open-webui/open-webui
+{f"Commit: {HIRAKU_BUILD_HASH}" if HIRAKU_BUILD_HASH != "dev-build" else ""}
+https://github.com/hiraku-ai/hiraku-ai
 """
 )
 
@@ -513,7 +513,7 @@ app.state.config = AppConfig(
     redis_sentinels=get_sentinels_from_env(REDIS_SENTINEL_HOSTS, REDIS_SENTINEL_PORT),
 )
 
-app.state.WEBUI_NAME = WEBUI_NAME
+app.state.HIRAKU_NAME = HIRAKU_NAME
 app.state.LICENSE_METADATA = None
 
 
@@ -574,11 +574,11 @@ app.state.config.ENABLE_DIRECT_CONNECTIONS = ENABLE_DIRECT_CONNECTIONS
 
 ########################################
 #
-# WEBUI
+# HIRAKU
 #
 ########################################
 
-app.state.config.WEBUI_URL = WEBUI_URL
+app.state.config.HIRAKU_URL = HIRAKU_URL
 app.state.config.ENABLE_SIGNUP = ENABLE_SIGNUP
 app.state.config.ENABLE_LOGIN_FORM = ENABLE_LOGIN_FORM
 
@@ -605,7 +605,7 @@ app.state.config.RESPONSE_WATERMARK = RESPONSE_WATERMARK
 
 app.state.config.USER_PERMISSIONS = USER_PERMISSIONS
 app.state.config.WEBHOOK_URL = WEBHOOK_URL
-app.state.config.BANNERS = WEBUI_BANNERS
+app.state.config.BANNERS = HIRAKU_BANNERS
 app.state.config.MODEL_ORDER_LIST = MODEL_ORDER_LIST
 
 
@@ -643,9 +643,9 @@ app.state.config.LDAP_VALIDATE_CERT = LDAP_VALIDATE_CERT
 app.state.config.LDAP_CIPHERS = LDAP_CIPHERS
 
 
-app.state.AUTH_TRUSTED_EMAIL_HEADER = WEBUI_AUTH_TRUSTED_EMAIL_HEADER
-app.state.AUTH_TRUSTED_NAME_HEADER = WEBUI_AUTH_TRUSTED_NAME_HEADER
-app.state.WEBUI_AUTH_SIGNOUT_REDIRECT_URL = WEBUI_AUTH_SIGNOUT_REDIRECT_URL
+app.state.AUTH_TRUSTED_EMAIL_HEADER = HIRAKU_AUTH_TRUSTED_EMAIL_HEADER
+app.state.AUTH_TRUSTED_NAME_HEADER = HIRAKU_AUTH_TRUSTED_NAME_HEADER
+app.state.HIRAKU_AUTH_SIGNOUT_REDIRECT_URL = HIRAKU_AUTH_SIGNOUT_REDIRECT_URL
 app.state.EXTERNAL_PWA_MANIFEST_URL = EXTERNAL_PWA_MANIFEST_URL
 
 app.state.USER_COUNT = None
@@ -981,7 +981,7 @@ app.state.config.AUTOCOMPLETE_GENERATION_INPUT_MAX_LENGTH = (
 
 ########################################
 #
-# WEBUI
+# HIRAKU
 #
 ########################################
 
@@ -1395,7 +1395,7 @@ async def get_app_config(request: Request):
     return {
         **({"onboarding": True} if onboarding else {}),
         "status": True,
-        "name": app.state.WEBUI_NAME,
+        "name": app.state.HIRAKU_NAME,
         "version": VERSION,
         "default_locale": str(DEFAULT_LOCALE),
         "oauth": {
@@ -1405,7 +1405,7 @@ async def get_app_config(request: Request):
             }
         },
         "features": {
-            "auth": WEBUI_AUTH,
+            "auth": HIRAKU_AUTH,
             "auth_trusted_header": bool(app.state.AUTH_TRUSTED_EMAIL_HEADER),
             "enable_ldap": app.state.config.ENABLE_LDAP,
             "enable_api_key": app.state.config.ENABLE_API_KEY,
@@ -1522,7 +1522,7 @@ async def get_app_latest_release_version(user=Depends(get_verified_user)):
         timeout = aiohttp.ClientTimeout(total=1)
         async with aiohttp.ClientSession(timeout=timeout, trust_env=True) as session:
             async with session.get(
-                "https://api.github.com/repos/open-webui/open-webui/releases/latest",
+                "https://api.github.com/repos/hiraku-ai/hiraku-ai/releases/latest",
                 ssl=AIOHTTP_CLIENT_SESSION_SSL,
             ) as response:
                 response.raise_for_status()
@@ -1548,10 +1548,10 @@ async def get_app_changelog():
 if len(OAUTH_PROVIDERS) > 0:
     app.add_middleware(
         SessionMiddleware,
-        secret_key=WEBUI_SECRET_KEY,
+        secret_key=HIRAKU_SECRET_KEY,
         session_cookie="oui-session",
-        same_site=WEBUI_SESSION_COOKIE_SAME_SITE,
-        https_only=WEBUI_SESSION_COOKIE_SECURE,
+        same_site=HIRAKU_SESSION_COOKIE_SAME_SITE,
+        https_only=HIRAKU_SESSION_COOKIE_SECURE,
     )
 
 
@@ -1577,8 +1577,8 @@ async def get_manifest_json():
         return requests.get(app.state.EXTERNAL_PWA_MANIFEST_URL).json()
     else:
         return {
-            "name": app.state.WEBUI_NAME,
-            "short_name": app.state.WEBUI_NAME,
+            "name": app.state.HIRAKU_NAME,
+            "short_name": app.state.HIRAKU_NAME,
             "description": "Hiraku AI is an open, extensible, user-friendly interface for AI that adapts to your workflow.",
             "start_url": "/",
             "display": "standalone",
@@ -1605,12 +1605,12 @@ async def get_manifest_json():
 async def get_opensearch_xml():
     xml_content = rf"""
     <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
-    <ShortName>{app.state.WEBUI_NAME}</ShortName>
-    <Description>Search {app.state.WEBUI_NAME}</Description>
+    <ShortName>{app.state.HIRAKU_NAME}</ShortName>
+    <Description>Search {app.state.HIRAKU_NAME}</Description>
     <InputEncoding>UTF-8</InputEncoding>
-    <Image width="16" height="16" type="image/x-icon">{app.state.config.WEBUI_URL}/static/favicon.png</Image>
-    <Url type="text/html" method="get" template="{app.state.config.WEBUI_URL}/?q={"{searchTerms}"}"/>
-    <moz:SearchForm>{app.state.config.WEBUI_URL}</moz:SearchForm>
+    <Image width="16" height="16" type="image/x-icon">{app.state.config.HIRAKU_URL}/static/favicon.png</Image>
+    <Url type="text/html" method="get" template="{app.state.config.HIRAKU_URL}/?q={"{searchTerms}"}"/>
+    <moz:SearchForm>{app.state.config.HIRAKU_URL}</moz:SearchForm>
     </OpenSearchDescription>
     """
     return Response(content=xml_content, media_type="application/xml")

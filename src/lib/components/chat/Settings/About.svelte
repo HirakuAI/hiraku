@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { getVersionUpdates } from '$lib/apis';
 	import { getOllamaVersion } from '$lib/apis/ollama';
-	import { WEBUI_BUILD_HASH, WEBUI_VERSION } from '$lib/constants';
-	import { WEBUI_NAME, config, showChangelog } from '$lib/stores';
+	import { HIRAKU_BUILD_HASH, HIRAKU_VERSION } from '$lib/constants';
+	import { HIRAKU_NAME, config, showChangelog } from '$lib/stores';
 	import { compareVersion } from '$lib/utils';
 	import { onMount, getContext } from 'svelte';
 
@@ -22,8 +22,8 @@
 		updateAvailable = null;
 		version = await getVersionUpdates(localStorage.token).catch((error) => {
 			return {
-				current: WEBUI_VERSION,
-				latest: WEBUI_VERSION
+				current: HIRAKU_VERSION,
+				latest: HIRAKU_VERSION
 			};
 		});
 
@@ -47,19 +47,19 @@
 		<div>
 			<div class=" mb-2.5 text-sm font-medium flex space-x-2 items-center">
 				<div>
-					{$WEBUI_NAME}
+					{$HIRAKU_NAME}
 					{$i18n.t('Version')}
 				</div>
 			</div>
 			<div class="flex w-full justify-between items-center">
 				<div class="flex flex-col text-xs text-gray-700 dark:text-gray-200">
 					<div class="flex gap-1">
-						<Tooltip content={WEBUI_BUILD_HASH}>
-							v{WEBUI_VERSION}
+						<Tooltip content={HIRAKU_BUILD_HASH}>
+							v{HIRAKU_VERSION}
 						</Tooltip>
 
 						<a
-							href="https://github.com/open-webui/open-webui/releases/tag/v{version.latest}"
+							href="https://github.com/hiraku-ai/hiraku-ai/releases/tag/v{version.latest}"
 							target="_blank"
 						>
 							{updateAvailable === null
@@ -108,8 +108,8 @@
 
 		{#if $config?.license_metadata}
 			<div class="mb-2 text-xs">
-				{#if !$WEBUI_NAME.includes('Hiraku AI')}
-					<span class=" text-gray-500 dark:text-gray-300 font-medium">{$WEBUI_NAME}</span> -
+				{#if !$HIRAKU_NAME.includes('Hiraku AI')}
+					<span class=" text-gray-500 dark:text-gray-300 font-medium">{$HIRAKU_NAME}</span> -
 				{/if}
 
 				<span class=" capitalize">{$config?.license_metadata?.type}</span> license purchased by
@@ -131,10 +131,10 @@
 					/>
 				</a>
 
-				<a href="https://github.com/open-webui/open-webui" target="_blank">
+				<a href="https://github.com/hiraku-ai/hiraku-ai" target="_blank">
 					<img
 						alt="Github Repo"
-						src="https://img.shields.io/github/stars/open-webui/open-webui?style=social&label=Star us on Github"
+						src="https://img.shields.io/github/stars/hiraku-ai/hiraku-ai?style=social&label=Star us on Github"
 					/>
 				</a>
 			</div>

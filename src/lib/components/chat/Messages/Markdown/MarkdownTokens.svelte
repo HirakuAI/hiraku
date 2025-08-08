@@ -9,7 +9,7 @@
 	import { marked, type Token } from 'marked';
 	import { unescapeHtml } from '$lib/utils';
 
-	import { WEBUI_BASE_URL } from '$lib/constants';
+	import { HIRAKU_BASE_URL } from '$lib/constants';
 
 	import CodeBlock from '$lib/components/chat/Messages/CodeBlock.svelte';
 	import MarkdownInlineTokens from '$lib/components/chat/Messages/Markdown/MarkdownInlineTokens.svelte';
@@ -274,7 +274,7 @@
 		<HtmlToken {id} {token} {onSourceClick} />
 	{:else if token.type === 'iframe'}
 		<iframe
-			src="{WEBUI_BASE_URL}/api/v1/files/{token.fileId}/content"
+			src="{HIRAKU_BASE_URL}/api/v1/files/{token.fileId}/content"
 			title={token.fileId}
 			width="100%"
 			frameborder="0"

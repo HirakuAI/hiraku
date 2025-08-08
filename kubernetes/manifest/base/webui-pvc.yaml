@@ -2,9 +2,9 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    app: open-webui
-  name: open-webui-pvc
-  namespace: open-webui
+    app: hiraku-ai
+  name: hiraku-ai-pvc
+  namespace: hiraku-ai
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:

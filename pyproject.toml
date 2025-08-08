@@ -1,5 +1,5 @@
 [project]
-name = "open-webui"
+name = "hiraku-ai"
 description = "Hiraku AI"
 authors = [
     { name = "Timothy Jaeryang Baek", email = "tim@openwebui.com" }
@@ -149,7 +149,7 @@ classifiers = [
 ]
 
 [project.scripts]
-open-webui = "hiraku:app"
+hiraku-ai = "hiraku:app"
 
 [build-system]
 requires = ["hatchling"]

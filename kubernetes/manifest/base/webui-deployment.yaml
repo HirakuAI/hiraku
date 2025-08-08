@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: open-webui-deployment
-  namespace: open-webui
+  name: hiraku-ai-deployment
+  namespace: hiraku-ai
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: open-webui
+      app: hiraku-ai
   template:
     metadata:
       labels:
-        app: open-webui
+        app: hiraku-ai
     spec:
       containers:
-      - name: open-webui
-        image: ghcr.io/open-webui/open-webui:main
+      - name: hiraku-ai
+        image: ghcr.io/hiraku-ai/hiraku-ai:main
         ports:
         - containerPort: 8080
         resources:
@@ -27,7 +27,7 @@ spec:
             memory: "1Gi"
         env:
         - name: OLLAMA_BASE_URL
-          value: "http://ollama-service.open-webui.svc.cluster.local:11434"
+          value: "http://ollama-service.hiraku-ai.svc.cluster.local:11434"
         tty: true
         volumeMounts:
         - name: webui-volume
@@ -35,4 +35,4 @@ spec:
       volumes:
       - name: webui-volume
         persistentVolumeClaim:
-          claimName: open-webui-pvc          
+          claimName: hiraku-ai-pvc          

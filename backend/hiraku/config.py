@@ -24,9 +24,9 @@ from hiraku.env import (
     FRONTEND_BUILD_DIR,
     OFFLINE_MODE,
     HIRAKU_DIR,
-    WEBUI_AUTH,
-    WEBUI_FAVICON_URL,
-    WEBUI_NAME,
+    HIRAKU_AUTH,
+    HIRAKU_FAVICON_URL,
+    HIRAKU_NAME,
     log,
 )
 from hiraku.internal.db import Base, get_db
@@ -230,7 +230,7 @@ class AppConfig:
             self._state[key].save()
 
             if self._redis:
-                redis_key = f"open-webui:config:{key}"
+                redis_key = f"hiraku-ai:config:{key}"
                 self._redis.set(redis_key, json.dumps(self._state[key].value))
 
     def __getattr__(self, key):
@@ -239,7 +239,7 @@ class AppConfig:
 
         # If Redis is available, check for an updated value
         if self._redis:
-            redis_key = f"open-webui:config:{key}"
+            redis_key = f"hiraku-ai:config:{key}"
             redis_value = self._redis.get(redis_key)
 
             if redis_value is not None:
@@ -258,7 +258,7 @@ class AppConfig:
 
 
 ####################################
-# WEBUI_AUTH (Required for security)
+# HIRAKU_AUTH (Required for security)
 ####################################
 
 ENABLE_API_KEY = PersistentConfig(
@@ -670,7 +670,7 @@ if CUSTOM_NAME:
         data = r.json()
         if r.ok:
             if "logo" in data:
-                WEBUI_FAVICON_URL = url = (
+                HIRAKU_FAVICON_URL = url = (
                     f"https://api.openwebui.com{data['logo']}"
                     if data["logo"][0] == "/"
                     else data["logo"]
@@ -695,7 +695,7 @@ if CUSTOM_NAME:
                         r.raw.decode_content = True
                         shutil.copyfileobj(r.raw, f)
 
-            WEBUI_NAME = data["name"]
+            HIRAKU_NAME = data["name"]
     except Exception as e:
         log.exception(e)
         pass
@@ -801,7 +801,7 @@ if ENV == "prod":
         else:
             OLLAMA_BASE_URL = "http://host.docker.internal:11434"
     elif K8S_FLAG:
-        OLLAMA_BASE_URL = "http://ollama-service.open-webui.svc.cluster.local:11434"
+        OLLAMA_BASE_URL = "http://ollama-service.hiraku-ai.svc.cluster.local:11434"
 
 
 OLLAMA_BASE_URLS = os.environ.get("OLLAMA_BASE_URLS", "")
@@ -897,12 +897,12 @@ TOOL_SERVER_CONNECTIONS = PersistentConfig(
 )
 
 ####################################
-# WEBUI
+# HIRAKU
 ####################################
 
 
-WEBUI_URL = PersistentConfig(
-    "WEBUI_URL", "webui.url", os.environ.get("WEBUI_URL", "http://localhost:3000")
+HIRAKU_URL = PersistentConfig(
+    "HIRAKU_URL", "webui.url", os.environ.get("HIRAKU_URL", "http://localhost:3000")
 )
 
 
@@ -911,7 +911,7 @@ ENABLE_SIGNUP = PersistentConfig(
     "ui.enable_signup",
     (
         False
-        if not WEBUI_AUTH
+        if not HIRAKU_AUTH
         else os.environ.get("ENABLE_SIGNUP", "True").lower() == "true"
     ),
 )
@@ -1294,13 +1294,13 @@ class BannerModel(BaseModel):
 
 
 try:
-    banners = json.loads(os.environ.get("WEBUI_BANNERS", "[]"))
+    banners = json.loads(os.environ.get("HIRAKU_BANNERS", "[]"))
     banners = [BannerModel(**banner) for banner in banners]
 except Exception as e:
-    log.exception(f"Error loading WEBUI_BANNERS: {e}")
+    log.exception(f"Error loading HIRAKU_BANNERS: {e}")
     banners = []
 
-WEBUI_BANNERS = PersistentConfig("WEBUI_BANNERS", "ui.banners", banners)
+HIRAKU_BANNERS = PersistentConfig("HIRAKU_BANNERS", "ui.banners", banners)
 
 
 SHOW_ADMIN_DETAILS = PersistentConfig(
@@ -1788,7 +1788,7 @@ PGVECTOR_INITIALIZE_MAX_VECTOR_LENGTH = int(
 # Pinecone
 PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY", None)
 PINECONE_ENVIRONMENT = os.environ.get("PINECONE_ENVIRONMENT", None)
-PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME", "open-webui-index")
+PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME", "hiraku-ai-index")
 PINECONE_DIMENSION = int(os.getenv("PINECONE_DIMENSION", 1536))  # or 3072, 1024, 768
 PINECONE_METRIC = os.getenv("PINECONE_METRIC", "cosine")
 PINECONE_CLOUD = os.getenv("PINECONE_CLOUD", "aws")  # or "gcp" or "azure"

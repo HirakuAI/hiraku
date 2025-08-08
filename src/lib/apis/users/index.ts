@@ -1,10 +1,10 @@
-import { WEBUI_API_BASE_URL } from '$lib/constants';
+import { HIRAKU_API_BASE_URL } from '$lib/constants';
 import { getUserPosition } from '$lib/utils';
 
 export const getUserGroups = async (token: string) => {
 	let error = null;
 
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users/groups`, {
+	const res = await fetch(`${HIRAKU_API_BASE_URL}/users/groups`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ export const getUserGroups = async (token: string) => {
 export const getUserDefaultPermissions = async (token: string) => {
 	let error = null;
 
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users/default/permissions`, {
+	const res = await fetch(`${HIRAKU_API_BASE_URL}/users/default/permissions`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export const getUserDefaultPermissions = async (token: string) => {
 export const updateUserDefaultPermissions = async (token: string, permissions: object) => {
 	let error = null;
 
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users/default/permissions`, {
+	const res = await fetch(`${HIRAKU_API_BASE_URL}/users/default/permissions`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ export const updateUserDefaultPermissions = async (token: string, permissions: o
 export const updateUserRole = async (token: string, id: string, role: string) => {
 	let error = null;
 
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users/update/role`, {
+	const res = await fetch(`${HIRAKU_API_BASE_URL}/users/update/role`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -142,7 +142,7 @@ export const getUsers = async (
 		searchParams.set('direction', direction);
 	}
 
-	res = await fetch(`${WEBUI_API_BASE_URL}/users/?${searchParams.toString()}`, {
+	res = await fetch(`${HIRAKU_API_BASE_URL}/users/?${searchParams.toString()}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -170,7 +170,7 @@ export const getAllUsers = async (token: string) => {
 	let error = null;
 	let res = null;
 
-	res = await fetch(`${WEBUI_API_BASE_URL}/users/all`, {
+	res = await fetch(`${HIRAKU_API_BASE_URL}/users/all`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -196,7 +196,7 @@ export const getAllUsers = async (token: string) => {
 
 export const getUserSettings = async (token: string) => {
 	let error = null;
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users/user/settings`, {
+	const res = await fetch(`${HIRAKU_API_BASE_URL}/users/user/settings`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -223,7 +223,7 @@ export const getUserSettings = async (token: string) => {
 export const updateUserSettings = async (token: string, settings: object) => {
 	let error = null;
 
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users/user/settings/update`, {
+	const res = await fetch(`${HIRAKU_API_BASE_URL}/users/user/settings/update`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -253,7 +253,7 @@ export const updateUserSettings = async (token: string, settings: object) => {
 export const getUserById = async (token: string, userId: string) => {
 	let error = null;
 
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users/${userId}`, {
+	const res = await fetch(`${HIRAKU_API_BASE_URL}/users/${userId}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -279,7 +279,7 @@ export const getUserById = async (token: string, userId: string) => {
 
 export const getUserInfo = async (token: string) => {
 	let error = null;
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users/user/info`, {
+	const res = await fetch(`${HIRAKU_API_BASE_URL}/users/user/info`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -306,7 +306,7 @@ export const getUserInfo = async (token: string) => {
 export const updateUserInfo = async (token: string, info: object) => {
 	let error = null;
 
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users/user/info/update`, {
+	const res = await fetch(`${HIRAKU_API_BASE_URL}/users/user/info/update`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -351,7 +351,7 @@ export const getAndUpdateUserLocation = async (token: string) => {
 export const deleteUserById = async (token: string, userId: string) => {
 	let error = null;
 
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users/${userId}`, {
+	const res = await fetch(`${HIRAKU_API_BASE_URL}/users/${userId}`, {
 		method: 'DELETE',
 		headers: {
 			'Content-Type': 'application/json',
@@ -385,7 +385,7 @@ type UserUpdateForm = {
 export const updateUserById = async (token: string, userId: string, user: UserUpdateForm) => {
 	let error = null;
 
-	const res = await fetch(`${WEBUI_API_BASE_URL}/users/${userId}/update`, {
+	const res = await fetch(`${HIRAKU_API_BASE_URL}/users/${userId}/update`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

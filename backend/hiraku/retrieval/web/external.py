@@ -20,7 +20,7 @@ def search_external(
         response = requests.post(
             external_url,
             headers={
-                "User-Agent": "Hiraku AI (https://github.com/open-webui/open-webui) RAG Bot",
+                "User-Agent": "Hiraku AI (https://github.com/hiraku-ai/hiraku-ai) RAG Bot",
                 "Authorization": f"Bearer {external_api_key}",
             },
             json={

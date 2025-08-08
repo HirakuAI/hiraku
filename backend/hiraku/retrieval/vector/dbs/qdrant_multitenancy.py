@@ -30,7 +30,7 @@ log.setLevel(SRC_LOG_LEVELS["RAG"])
 
 class QdrantClient(VectorDBBase):
     def __init__(self):
-        self.collection_prefix = "open-webui"
+        self.collection_prefix = "hiraku-ai"
         self.QDRANT_URI = QDRANT_URI
         self.QDRANT_API_KEY = QDRANT_API_KEY
         self.QDRANT_ON_DISK = QDRANT_ON_DISK

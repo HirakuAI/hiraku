@@ -13,7 +13,7 @@
 	import SensitiveInput from '$lib/components/common/SensitiveInput.svelte';
 	import Switch from '$lib/components/common/Switch.svelte';
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
-	import { WEBUI_BUILD_HASH, WEBUI_VERSION } from '$lib/constants';
+	import { HIRAKU_BUILD_HASH, HIRAKU_VERSION } from '$lib/constants';
 	import { config, showChangelog } from '$lib/stores';
 	import { compareVersion } from '$lib/utils';
 	import { onMount, getContext } from 'svelte';
@@ -54,8 +54,8 @@
 		updateAvailable = null;
 		version = await getVersionUpdates(localStorage.token).catch((error) => {
 			return {
-				current: WEBUI_VERSION,
-				latest: WEBUI_VERSION
+				current: HIRAKU_VERSION,
+				latest: HIRAKU_VERSION
 			};
 		});
 
@@ -132,12 +132,12 @@
 						<div class="flex w-full justify-between items-center">
 							<div class="flex flex-col text-xs text-gray-700 dark:text-gray-200">
 								<div class="flex gap-1">
-									<Tooltip content={WEBUI_BUILD_HASH}>
-										v{WEBUI_VERSION}
+									<Tooltip content={HIRAKU_BUILD_HASH}>
+										v{HIRAKU_VERSION}
 									</Tooltip>
 
 									<a
-										href="https://github.com/open-webui/open-webui/releases/tag/v{version.latest}"
+										href="https://github.com/hiraku-ai/hiraku-ai/releases/tag/v{version.latest}"
 										target="_blank"
 									>
 										{updateAvailable === null
@@ -207,10 +207,10 @@
 									/>
 								</a>
 
-								<a href="https://github.com/open-webui/open-webui" target="_blank">
+								<a href="https://github.com/hiraku-ai/hiraku-ai" target="_blank">
 									<img
 										alt="Github Repo"
-										src="https://img.shields.io/github/stars/open-webui/open-webui?style=social&label=Star us on Github"
+										src="https://img.shields.io/github/stars/hiraku-ai/hiraku-ai?style=social&label=Star us on Github"
 									/>
 								</a>
 							</div>
@@ -678,7 +678,7 @@
 								class="w-full rounded-lg py-2 px-4 text-sm bg-gray-50 dark:text-gray-300 dark:bg-gray-850 outline-hidden"
 								type="text"
 								placeholder={`e.g.) "http://localhost:3000"`}
-								bind:value={adminConfig.WEBUI_URL}
+								bind:value={adminConfig.HIRAKU_URL}
 							/>
 						</div>
 

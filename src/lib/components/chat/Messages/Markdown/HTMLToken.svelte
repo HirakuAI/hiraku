@@ -2,7 +2,7 @@
 	import DOMPurify from 'dompurify';
 	import type { Token } from 'marked';
 
-	import { WEBUI_BASE_URL } from '$lib/constants';
+	import { HIRAKU_BASE_URL } from '$lib/constants';
 	import Source from './Source.svelte';
 	import { settings } from '$lib/stores';
 
@@ -61,7 +61,7 @@
 		{#if fileId}
 			<iframe
 				class="w-full my-2"
-				src={`${WEBUI_BASE_URL}/api/v1/files/${fileId}/content/html`}
+				src={`${HIRAKU_BASE_URL}/api/v1/files/${fileId}/content/html`}
 				title="Content"
 				frameborder="0"
 				sandbox="allow-scripts{($settings?.iframeSandboxAllowForms ?? false)

@@ -7,8 +7,8 @@
 	import { onMount, getContext } from 'svelte';
 	import { goto } from '$app/navigation';
 
-	import { WEBUI_NAME, config, user, showSidebar, knowledge } from '$lib/stores';
-	import { WEBUI_BASE_URL } from '$lib/constants';
+	import { HIRAKU_NAME, config, user, showSidebar, knowledge } from '$lib/stores';
+	import { HIRAKU_BASE_URL } from '$lib/constants';
 
 	import Tooltip from '$lib/components/common/Tooltip.svelte';
 	import Plus from '$lib/components/icons/Plus.svelte';

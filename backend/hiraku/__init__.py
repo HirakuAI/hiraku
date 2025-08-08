@@ -36,15 +36,15 @@ def serve(
     port: int = 8080,
 ):
     os.environ["FROM_INIT_PY"] = "true"
-    if os.getenv("WEBUI_SECRET_KEY") is None:
+    if os.getenv("HIRAKU_SECRET_KEY") is None:
         typer.echo(
-            "Loading WEBUI_SECRET_KEY from file, not provided as an environment variable."
+            "Loading HIRAKU_SECRET_KEY from file, not provided as an environment variable."
         )
         if not KEY_FILE.exists():
             typer.echo(f"Generating a new secret key and saving it to {KEY_FILE}")
             KEY_FILE.write_bytes(base64.b64encode(random.randbytes(12)))
-        typer.echo(f"Loading WEBUI_SECRET_KEY from {KEY_FILE}")
-        os.environ["WEBUI_SECRET_KEY"] = KEY_FILE.read_text()
+        typer.echo(f"Loading HIRAKU_SECRET_KEY from {KEY_FILE}")
+        os.environ["HIRAKU_SECRET_KEY"] = KEY_FILE.read_text()
 
     if os.getenv("USE_CUDA_DOCKER", "false") == "true":
         typer.echo(

@@ -23,13 +23,13 @@ from hiraku.models.groups import Groups
 
 from hiraku.constants import ERROR_MESSAGES, WEBHOOK_MESSAGES
 from hiraku.env import (
-    WEBUI_AUTH,
-    WEBUI_AUTH_TRUSTED_EMAIL_HEADER,
-    WEBUI_AUTH_TRUSTED_NAME_HEADER,
-    WEBUI_AUTH_TRUSTED_GROUPS_HEADER,
-    WEBUI_AUTH_COOKIE_SAME_SITE,
-    WEBUI_AUTH_COOKIE_SECURE,
-    WEBUI_AUTH_SIGNOUT_REDIRECT_URL,
+    HIRAKU_AUTH,
+    HIRAKU_AUTH_TRUSTED_EMAIL_HEADER,
+    HIRAKU_AUTH_TRUSTED_NAME_HEADER,
+    HIRAKU_AUTH_TRUSTED_GROUPS_HEADER,
+    HIRAKU_AUTH_COOKIE_SAME_SITE,
+    HIRAKU_AUTH_COOKIE_SECURE,
+    HIRAKU_AUTH_SIGNOUT_REDIRECT_URL,
     SRC_LOG_LEVELS,
 )
 from fastapi import APIRouter, Depends, HTTPException, Request, status
@@ -105,8 +105,8 @@ async def get_session_user(
                 else None
             ),
             httponly=True,  # Ensures the cookie is not accessible via JavaScript
-            samesite=WEBUI_AUTH_COOKIE_SAME_SITE,
-            secure=WEBUI_AUTH_COOKIE_SECURE,
+            samesite=HIRAKU_AUTH_COOKIE_SAME_SITE,
+            secure=HIRAKU_AUTH_COOKIE_SECURE,
         )
 
     user_permissions = get_permissions(
@@ -157,7 +157,7 @@ async def update_profile(
 async def update_password(
     form_data: UpdatePasswordForm, session_user=Depends(get_current_user)
 ):
-    if WEBUI_AUTH_TRUSTED_EMAIL_HEADER:
+    if HIRAKU_AUTH_TRUSTED_EMAIL_HEADER:
         raise HTTPException(400, detail=ERROR_MESSAGES.ACTION_PROHIBITED)
     if session_user:
         user = Auths.authenticate_user(session_user.email, form_data.password)
@@ -326,8 +326,8 @@ async def ldap_auth(request: Request, response: Response, form_data: LdapForm):
                         else None
                     ),
                     httponly=True,  # Ensures the cookie is not accessible via JavaScript
-                    samesite=WEBUI_AUTH_COOKIE_SAME_SITE,
-                    secure=WEBUI_AUTH_COOKIE_SECURE,
+                    samesite=HIRAKU_AUTH_COOKIE_SAME_SITE,
+                    secure=HIRAKU_AUTH_COOKIE_SECURE,
                 )
 
                 user_permissions = get_permissions(
@@ -361,15 +361,15 @@ async def ldap_auth(request: Request, response: Response, form_data: LdapForm):
 
 @router.post("/signin", response_model=SessionUserResponse)
 async def signin(request: Request, response: Response, form_data: SigninForm):
-    if WEBUI_AUTH_TRUSTED_EMAIL_HEADER:
-        if WEBUI_AUTH_TRUSTED_EMAIL_HEADER not in request.headers:
+    if HIRAKU_AUTH_TRUSTED_EMAIL_HEADER:
+        if HIRAKU_AUTH_TRUSTED_EMAIL_HEADER not in request.headers:
             raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_TRUSTED_HEADER)
 
-        email = request.headers[WEBUI_AUTH_TRUSTED_EMAIL_HEADER].lower()
+        email = request.headers[HIRAKU_AUTH_TRUSTED_EMAIL_HEADER].lower()
         name = email
 
-        if WEBUI_AUTH_TRUSTED_NAME_HEADER:
-            name = request.headers.get(WEBUI_AUTH_TRUSTED_NAME_HEADER, email)
+        if HIRAKU_AUTH_TRUSTED_NAME_HEADER:
+            name = request.headers.get(HIRAKU_AUTH_TRUSTED_NAME_HEADER, email)
 
         if not Users.get_user_by_email(email.lower()):
             await signup(
@@ -379,16 +379,16 @@ async def signin(request: Request, response: Response, form_data: SigninForm):
             )
 
         user = Auths.authenticate_user_by_email(email)
-        if WEBUI_AUTH_TRUSTED_GROUPS_HEADER and user and user.role != "admin":
+        if HIRAKU_AUTH_TRUSTED_GROUPS_HEADER and user and user.role != "admin":
             group_names = request.headers.get(
-                WEBUI_AUTH_TRUSTED_GROUPS_HEADER, ""
+                HIRAKU_AUTH_TRUSTED_GROUPS_HEADER, ""
             ).split(",")
             group_names = [name.strip() for name in group_names if name.strip()]
 
             if group_names:
                 Groups.sync_user_groups_by_group_names(user.id, group_names)
 
-    elif WEBUI_AUTH == False:
+    elif HIRAKU_AUTH == False:
         admin_email = "admin@localhost"
         admin_password = "admin"
 
@@ -432,8 +432,8 @@ async def signin(request: Request, response: Response, form_data: SigninForm):
             value=token,
             expires=datetime_expires_at,
             httponly=True,  # Ensures the cookie is not accessible via JavaScript
-            samesite=WEBUI_AUTH_COOKIE_SAME_SITE,
-            secure=WEBUI_AUTH_COOKIE_SECURE,
+            samesite=HIRAKU_AUTH_COOKIE_SAME_SITE,
+            secure=HIRAKU_AUTH_COOKIE_SECURE,
         )
 
         user_permissions = get_permissions(
@@ -463,7 +463,7 @@ async def signin(request: Request, response: Response, form_data: SigninForm):
 @router.post("/signup", response_model=SessionUserResponse)
 async def signup(request: Request, response: Response, form_data: SignupForm):
 
-    if WEBUI_AUTH:
+    if HIRAKU_AUTH:
         if (
             not request.app.state.config.ENABLE_SIGNUP
             or not request.app.state.config.ENABLE_LOGIN_FORM
@@ -530,13 +530,13 @@ async def signup(request: Request, response: Response, form_data: SignupForm):
                 value=token,
                 expires=datetime_expires_at,
                 httponly=True,  # Ensures the cookie is not accessible via JavaScript
-                samesite=WEBUI_AUTH_COOKIE_SAME_SITE,
-                secure=WEBUI_AUTH_COOKIE_SECURE,
+                samesite=HIRAKU_AUTH_COOKIE_SAME_SITE,
+                secure=HIRAKU_AUTH_COOKIE_SECURE,
             )
 
             if request.app.state.config.WEBHOOK_URL:
                 post_webhook(
-                    request.app.state.WEBUI_NAME,
+                    request.app.state.HIRAKU_NAME,
                     request.app.state.config.WEBHOOK_URL,
                     WEBHOOK_MESSAGES.USER_SIGNUP(user.name),
                     {
@@ -608,12 +608,12 @@ async def signout(request: Request, response: Response):
                     detail="Failed to sign out from the OpenID provider.",
                 )
 
-    if WEBUI_AUTH_SIGNOUT_REDIRECT_URL:
+    if HIRAKU_AUTH_SIGNOUT_REDIRECT_URL:
         return JSONResponse(
             status_code=200,
             content={
                 "status": True,
-                "redirect_url": WEBUI_AUTH_SIGNOUT_REDIRECT_URL,
+                "redirect_url": HIRAKU_AUTH_SIGNOUT_REDIRECT_URL,
             },
             headers=response.headers,
         )
@@ -708,7 +708,7 @@ async def get_admin_details(request: Request, user=Depends(get_current_user)):
 async def get_admin_config(request: Request, user=Depends(get_admin_user)):
     return {
         "SHOW_ADMIN_DETAILS": request.app.state.config.SHOW_ADMIN_DETAILS,
-        "WEBUI_URL": request.app.state.config.WEBUI_URL,
+        "HIRAKU_URL": request.app.state.config.HIRAKU_URL,
         "ENABLE_SIGNUP": request.app.state.config.ENABLE_SIGNUP,
         "ENABLE_API_KEY": request.app.state.config.ENABLE_API_KEY,
         "ENABLE_API_KEY_ENDPOINT_RESTRICTIONS": request.app.state.config.ENABLE_API_KEY_ENDPOINT_RESTRICTIONS,
@@ -728,7 +728,7 @@ async def get_admin_config(request: Request, user=Depends(get_admin_user)):
 
 class AdminConfig(BaseModel):
     SHOW_ADMIN_DETAILS: bool
-    WEBUI_URL: str
+    HIRAKU_URL: str
     ENABLE_SIGNUP: bool
     ENABLE_API_KEY: bool
     ENABLE_API_KEY_ENDPOINT_RESTRICTIONS: bool
@@ -750,7 +750,7 @@ async def update_admin_config(
     request: Request, form_data: AdminConfig, user=Depends(get_admin_user)
 ):
     request.app.state.config.SHOW_ADMIN_DETAILS = form_data.SHOW_ADMIN_DETAILS
-    request.app.state.config.WEBUI_URL = form_data.WEBUI_URL
+    request.app.state.config.HIRAKU_URL = form_data.HIRAKU_URL
     request.app.state.config.ENABLE_SIGNUP = form_data.ENABLE_SIGNUP
 
     request.app.state.config.ENABLE_API_KEY = form_data.ENABLE_API_KEY
@@ -791,7 +791,7 @@ async def update_admin_config(
 
     return {
         "SHOW_ADMIN_DETAILS": request.app.state.config.SHOW_ADMIN_DETAILS,
-        "WEBUI_URL": request.app.state.config.WEBUI_URL,
+        "HIRAKU_URL": request.app.state.config.HIRAKU_URL,
         "ENABLE_SIGNUP": request.app.state.config.ENABLE_SIGNUP,
         "ENABLE_API_KEY": request.app.state.config.ENABLE_API_KEY,
         "ENABLE_API_KEY_ENDPOINT_RESTRICTIONS": request.app.state.config.ENABLE_API_KEY_ENDPOINT_RESTRICTIONS,

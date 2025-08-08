@@ -5,7 +5,7 @@
 
 	import { goto } from '$app/navigation';
 	import { onMount, getContext } from 'svelte';
-	import { WEBUI_NAME, config, prompts as _prompts, user } from '$lib/stores';
+	import { HIRAKU_NAME, config, prompts as _prompts, user } from '$lib/stores';
 
 	import {
 		createNewPrompt,
@@ -98,7 +98,7 @@
 
 <svelte:head>
 	<title>
-		{$i18n.t('Prompts')} • {$WEBUI_NAME}
+		{$i18n.t('Prompts')} • {$HIRAKU_NAME}
 	</title>
 </svelte:head>
 
@@ -350,7 +350,7 @@
 
 			<a
 				class=" flex cursor-pointer items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-850 w-full mb-2 px-3.5 py-1.5 rounded-xl transition"
-				href="https://openwebui.com/#open-webui-community"
+				href="https://openwebui.com/#hiraku-ai-community"
 				target="_blank"
 			>
 				<div class=" self-center">

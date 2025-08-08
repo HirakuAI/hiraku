@@ -42,9 +42,9 @@ from hiraku.config import (
 from hiraku.constants import ERROR_MESSAGES, WEBHOOK_MESSAGES
 from hiraku.env import (
     AIOHTTP_CLIENT_SESSION_SSL,
-    WEBUI_NAME,
-    WEBUI_AUTH_COOKIE_SAME_SITE,
-    WEBUI_AUTH_COOKIE_SECURE,
+    HIRAKU_NAME,
+    HIRAKU_AUTH_COOKIE_SAME_SITE,
+    HIRAKU_AUTH_COOKIE_SECURE,
 )
 from hiraku.utils.misc import parse_duration
 from hiraku.utils.auth import get_password_hash, create_token
@@ -491,7 +491,7 @@ class OAuthManager:
 
                 if auth_manager_config.WEBHOOK_URL:
                     post_webhook(
-                        WEBUI_NAME,
+                        HIRAKU_NAME,
                         auth_manager_config.WEBHOOK_URL,
                         WEBHOOK_MESSAGES.USER_SIGNUP(user.name),
                         {
@@ -522,8 +522,8 @@ class OAuthManager:
             key="token",
             value=jwt_token,
             httponly=True,  # Ensures the cookie is not accessible via JavaScript
-            samesite=WEBUI_AUTH_COOKIE_SAME_SITE,
-            secure=WEBUI_AUTH_COOKIE_SECURE,
+            samesite=HIRAKU_AUTH_COOKIE_SAME_SITE,
+            secure=HIRAKU_AUTH_COOKIE_SECURE,
         )
 
         if ENABLE_OAUTH_SIGNUP.value:
@@ -532,12 +532,12 @@ class OAuthManager:
                 key="oauth_id_token",
                 value=oauth_id_token,
                 httponly=True,
-                samesite=WEBUI_AUTH_COOKIE_SAME_SITE,
-                secure=WEBUI_AUTH_COOKIE_SECURE,
+                samesite=HIRAKU_AUTH_COOKIE_SAME_SITE,
+                secure=HIRAKU_AUTH_COOKIE_SECURE,
             )
         # Redirect back to the frontend with the JWT token
 
-        redirect_base_url = request.app.state.config.WEBUI_URL or request.base_url
+        redirect_base_url = request.app.state.config.HIRAKU_URL or request.base_url
         if redirect_base_url.endswith("/"):
             redirect_base_url = redirect_base_url[:-1]
         redirect_url = f"{redirect_base_url}/auth#token={jwt_token}"

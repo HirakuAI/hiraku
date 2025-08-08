@@ -20,27 +20,27 @@ IF /I "%WEB_LOADER_ENGINE%" == "playwright" (
 SET "KEY_FILE=.webui_secret_key"
 IF "%PORT%"=="" SET PORT=8080
 IF "%HOST%"=="" SET HOST=0.0.0.0
-SET "WEBUI_SECRET_KEY=%WEBUI_SECRET_KEY%"
-SET "WEBUI_JWT_SECRET_KEY=%WEBUI_JWT_SECRET_KEY%"
+SET "HIRAKU_SECRET_KEY=%HIRAKU_SECRET_KEY%"
+SET "HIRAKU_JWT_SECRET_KEY=%HIRAKU_JWT_SECRET_KEY%"
 
-:: Check if WEBUI_SECRET_KEY and WEBUI_JWT_SECRET_KEY are not set
-IF "%WEBUI_SECRET_KEY%%WEBUI_JWT_SECRET_KEY%" == " " (
-    echo Loading WEBUI_SECRET_KEY from file, not provided as an environment variable.
+:: Check if HIRAKU_SECRET_KEY and HIRAKU_JWT_SECRET_KEY are not set
+IF "%HIRAKU_SECRET_KEY%%HIRAKU_JWT_SECRET_KEY%" == " " (
+    echo Loading HIRAKU_SECRET_KEY from file, not provided as an environment variable.
 
     IF NOT EXIST "%KEY_FILE%" (
-        echo Generating WEBUI_SECRET_KEY
-        :: Generate a random value to use as a WEBUI_SECRET_KEY in case the user didn't provide one
-        SET /p WEBUI_SECRET_KEY=<nul
-        FOR /L %%i IN (1,1,12) DO SET /p WEBUI_SECRET_KEY=<!random!>>%KEY_FILE%
-        echo WEBUI_SECRET_KEY generated
+        echo Generating HIRAKU_SECRET_KEY
+        :: Generate a random value to use as a HIRAKU_SECRET_KEY in case the user didn't provide one
+        SET /p HIRAKU_SECRET_KEY=<nul
+        FOR /L %%i IN (1,1,12) DO SET /p HIRAKU_SECRET_KEY=<!random!>>%KEY_FILE%
+        echo HIRAKU_SECRET_KEY generated
     )
 
-    echo Loading WEBUI_SECRET_KEY from %KEY_FILE%
-    SET /p WEBUI_SECRET_KEY=<%KEY_FILE%
+    echo Loading HIRAKU_SECRET_KEY from %KEY_FILE%
+    SET /p HIRAKU_SECRET_KEY=<%KEY_FILE%
 )
 
 :: Execute uvicorn
-SET "WEBUI_SECRET_KEY=%WEBUI_SECRET_KEY%"
+SET "HIRAKU_SECRET_KEY=%HIRAKU_SECRET_KEY%"
 IF "%UVICORN_WORKERS%"=="" SET UVICORN_WORKERS=1
 uvicorn hiraku.main:app --host "%HOST%" --port "%PORT%" --forwarded-allow-ips '*' --workers %UVICORN_WORKERS% --ws auto
 :: For ssl user uvicorn hiraku.main:app --host "%HOST%" --port "%PORT%" --forwarded-allow-ips '*' --ssl-keyfile "key.pem" --ssl-certfile "cert.pem" --ws auto

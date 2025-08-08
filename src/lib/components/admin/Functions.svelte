@@ -3,7 +3,7 @@
 	import fileSaver from 'file-saver';
 	const { saveAs } = fileSaver;
 
-	import { WEBUI_NAME, config, functions, models, settings } from '$lib/stores';
+	import { HIRAKU_NAME, config, functions, models, settings } from '$lib/stores';
 	import { onMount, getContext, tick } from 'svelte';
 
 	import { goto } from '$app/navigation';
@@ -198,7 +198,7 @@
 
 <svelte:head>
 	<title>
-		{$i18n.t('Functions')} • {$WEBUI_NAME}
+		{$i18n.t('Functions')} • {$HIRAKU_NAME}
 	</title>
 </svelte:head>
 
@@ -518,7 +518,7 @@
 
 		<a
 			class=" flex cursor-pointer items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-850 w-full mb-2 px-3.5 py-1.5 rounded-xl transition"
-			href="https://openwebui.com/#open-webui-community"
+			href="https://openwebui.com/#hiraku-ai-community"
 			target="_blank"
 		>
 			<div class=" self-center">

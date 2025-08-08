@@ -585,8 +585,8 @@ async def post_new_message(
 
             background_tasks.add_task(
                 send_notification,
-                request.app.state.WEBUI_NAME,
-                request.app.state.config.WEBUI_URL,
+                request.app.state.HIRAKU_NAME,
+                request.app.state.config.HIRAKU_URL,
                 channel,
                 message,
                 active_user_ids,
