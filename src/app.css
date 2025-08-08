@@ -41,7 +41,7 @@ code {
 }
 
 .font-secondary {
-	font-family: 'InstrumentSerif', sans-serif;
+	font-family: 'SF Pro Text', 'Segoe UI Variable Text', 'Roboto', system-ui, sans-serif;
 }
 
 math {
@@ -49,7 +49,7 @@ math {
 }
 
 .hljs {
-	@apply rounded-lg;
+	@apply rounded-none;
 }
 
 input::placeholder {
@@ -81,7 +81,7 @@ textarea::placeholder {
 }
 
 .font-primary {
-	font-family: 'Archivo', 'Vazirmatn', sans-serif;
+	font-family: 'SF Pro Display', 'Segoe UI Variable Display', 'Roboto Flex', system-ui, sans-serif;
 }
 
 .drag-region {
@@ -105,7 +105,7 @@ li p {
 	--tw-border-opacity: 1;
 	background-color: rgba(215, 215, 215, 0.8);
 	border-color: rgba(255, 255, 255, var(--tw-border-opacity));
-	border-radius: 9999px;
+	border-radius: 0;
 	border-width: 1px;
 }
 
@@ -122,7 +122,7 @@ li p {
 
 ::-webkit-scrollbar-track {
 	background-color: transparent;
-	border-radius: 9999px;
+	border-radius: 0;
 }
 
 select {
@@ -270,7 +270,7 @@ input[type='number'] {
 }
 
 .tippy-box[data-theme~='dark'] {
-	@apply rounded-lg bg-gray-950 text-xs border border-gray-900 shadow-xl;
+	@apply rounded-none bg-gray-950 text-xs border border-gray-900 shadow-xl;
 }
 
 .password {
@@ -283,7 +283,7 @@ input[type='number'] {
 	padding: 3px 8px;
 	font-size: 0.8em;
 	font-weight: 600;
-	@apply rounded-md dark:bg-gray-800 bg-gray-100 mx-0.5;
+	@apply rounded-none dark:bg-gray-800 bg-gray-100 mx-0.5;
 }
 
 .svelte-flow {
@@ -314,9 +314,8 @@ input[type='number'] {
 .ProseMirror p.is-editor-empty:first-child::before {
 	content: attr(data-placeholder);
 	float: left;
-	/* Below color is from tailwind, and has the proper contrast
-	text-gray-600 from: https://tailwindcss.com/docs/color */
-	color: #676767;
+	/* High contrast placeholder color */
+	color: #495057;
 	pointer-events: none;
 
 	@apply line-clamp-1 absolute;
@@ -324,19 +323,19 @@ input[type='number'] {
 
 @media (prefers-color-scheme: dark) {
 	.ProseMirror p.is-editor-empty:first-child::before {
-		color: #757575;
+		color: #adb5bd;
 	}
 }
 
 .ai-autocompletion::after {
-	color: #a0a0a0;
+	color: #6c757d;
 
 	content: attr(data-suggestion);
 	pointer-events: none;
 }
 
 .tiptap > pre > code {
-	border-radius: 0.4rem;
+	border-radius: 0;
 	font-size: 0.85rem;
 	padding: 0.25em 0.3em;
 
@@ -344,7 +343,7 @@ input[type='number'] {
 }
 
 .tiptap > pre {
-	border-radius: 0.5rem;
+	border-radius: 0;
 	font-family: 'JetBrainsMono', monospace;
 	margin: 1.5rem 0;
 	padding: 0.75rem 1rem;

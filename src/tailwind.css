@@ -20,12 +20,77 @@
 	}
 }
 
+/* New palette overrides and global square corners */
+@layer base {
+  /* Override gray palette (light mode) - High contrast */
+  :root {
+    --color-gray-50: #ffffff;
+    --color-gray-100: #f8f9fa;
+    --color-gray-200: #e9ecef;
+    --color-gray-300: #dee2e6;
+    --color-gray-400: #6c757d;
+    --color-gray-500: #495057;
+    --color-gray-600: #343a40;
+    --color-gray-700: #212529;
+    --color-gray-800: #1a1d20;
+    --color-gray-850: #151719;
+    --color-gray-900: #0f1113;
+    --color-gray-950: #000000;
+  }
+
+  /* Override gray palette (dark mode) - High contrast */
+  .dark {
+    --color-gray-50: #ffffff;
+    --color-gray-100: #f8f9fa;
+    --color-gray-200: #e9ecef;
+    --color-gray-300: #ced4da;
+    --color-gray-400: #adb5bd;
+    --color-gray-500: #6c757d;
+    --color-gray-600: #495057;
+    --color-gray-700: #343a40;
+    --color-gray-800: #212529;
+    --color-gray-850: #1a1d20;
+    --color-gray-900: #0f1113;
+    --color-gray-950: #000000;
+  }
+
+  /* Force square corners everywhere */
+  *, ::before, ::after, ::file-selector-button {
+    border-radius: 0 !important;
+  }
+
+  /* Enhanced text contrast for readability */
+  body, .text-gray-900 {
+    color: var(--color-gray-950) !important;
+  }
+  
+  .dark body, .dark .text-gray-900 {
+    color: var(--color-gray-50) !important;
+  }
+  
+  .text-gray-700 {
+    color: var(--color-gray-800) !important;
+  }
+  
+  .dark .text-gray-700 {
+    color: var(--color-gray-200) !important;
+  }
+  
+  .text-gray-500 {
+    color: var(--color-gray-600) !important;
+  }
+  
+  .dark .text-gray-500 {
+    color: var(--color-gray-400) !important;
+  }
+}
+
 @layer base {
 	html,
 	pre {
-		font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Vazirmatn', ui-sans-serif, system-ui,
-			'Segoe UI', Roboto, Ubuntu, Cantarell, 'Noto Sans', sans-serif, 'Helvetica Neue', Arial,
-			'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+		font-family: 'SF Pro Display', 'Segoe UI Variable', 'Roboto Flex', system-ui, -apple-system, 
+			BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 
+			'Segoe UI Emoji', 'Noto Color Emoji';
 	}
 
 	pre {
