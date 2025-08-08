@@ -20,50 +20,54 @@
 	}
 }
 
-/* Vibrant gradient palette and global square corners */
+/* Calm slate palette and global square corners */
 @layer base {
-  /* Vibrant color palette with purple-violet-red-orange theme */
+  /* Neutral slate palette for comfortable contrast */
   :root {
-    --color-gray-50: #fefefe;
-    --color-gray-100: #f9f7ff;
-    --color-gray-200: #f3f0ff;
-    --color-gray-300: #e9e5ff;
-    --color-gray-400: #c4b5fd;
-    --color-gray-500: #a78bfa;
-    --color-gray-600: #8b5cf6;
-    --color-gray-700: #7c3aed;
-    --color-gray-800: #6d28d9;
-    --color-gray-850: #5b21b6;
-    --color-gray-900: #4c1d95;
-    --color-gray-950: #2e1065;
-    
-    /* Gradient colors */
-    --gradient-start: #8b5cf6;
-    --gradient-middle: #ec4899;
-    --gradient-end: #f97316;
-    --gradient-accent: #ef4444;
+    --color-gray-50: #f8fafc;  /* slate-50 */
+    --color-gray-100: #f1f5f9; /* slate-100 */
+    --color-gray-200: #e2e8f0; /* slate-200 */
+    --color-gray-300: #cbd5e1; /* slate-300 */
+    --color-gray-400: #94a3b8; /* slate-400 */
+    --color-gray-500: #64748b; /* slate-500 */
+    --color-gray-600: #475569; /* slate-600 */
+    --color-gray-700: #334155; /* slate-700 */
+    --color-gray-800: #1e293b; /* slate-800 */
+    --color-gray-850: #111827; /* between 800 and 900 */
+    --color-gray-900: #0f172a; /* slate-900 */
+    --color-gray-950: #020617; /* slate-950 */
+
+    /* Soft neutral gradients (used sparingly) */
+    --gradient-start: #475569; /* slate-600 */
+    --gradient-middle: #334155; /* slate-700 */
+    --gradient-end: #1e293b;   /* slate-800 */
+    --gradient-accent: #94a3b8; /* slate-400 */
+
+    /* App background */
+    --app-bg: #f8fafc; /* light */
   }
 
-  /* Dark mode with deeper purples and vibrant accents */
+  /* Dark mode neutrals */
   .dark {
-    --color-gray-50: #fefefe;
-    --color-gray-100: #f5f3ff;
-    --color-gray-200: #ede9fe;
-    --color-gray-300: #ddd6fe;
-    --color-gray-400: #c4b5fd;
-    --color-gray-500: #a78bfa;
-    --color-gray-600: #8b5cf6;
-    --color-gray-700: #7c3aed;
-    --color-gray-800: #1a0f2e;
-    --color-gray-850: #140a26;
-    --color-gray-900: #0f081f;
-    --color-gray-950: #0a0514;
-    
-    /* Dark mode gradients */
-    --gradient-start: #6366f1;
-    --gradient-middle: #d946ef;
-    --gradient-end: #f59e0b;
-    --gradient-accent: #ef4444;
+    --color-gray-50: #e5e7eb;  /* readable text on dark */
+    --color-gray-100: #d1d5db;
+    --color-gray-200: #9ca3af;
+    --color-gray-300: #6b7280;
+    --color-gray-400: #4b5563;
+    --color-gray-500: #374151;
+    --color-gray-600: #1f2937;
+    --color-gray-700: #111827;
+    --color-gray-800: #0b1220; /* dark bg */
+    --color-gray-850: #0a0f1a;
+    --color-gray-900: #080d16;
+    --color-gray-950: #05070c;
+
+    --gradient-start: #334155; /* slate-700 */
+    --gradient-middle: #1f2937; /* slate-800 */
+    --gradient-end: #0b1220;   /* dark bg */
+    --gradient-accent: #64748b; /* slate-500 */
+
+    --app-bg: #0b1220; /* dark */
   }
 
   /* Force square corners everywhere */
@@ -96,9 +100,9 @@
     color: var(--color-gray-400) !important;
   }
 
-  /* Gradient background effects */
+  /* Solid, low-strain background */
   body {
-    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-middle) 50%, var(--gradient-end) 100%);
+    background: var(--app-bg);
     min-height: 100vh;
   }
 
@@ -115,7 +119,7 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  /* Animated gradient overlays */
+  /* Subtle neutral overlays (very low opacity) */
   .gradient-overlay::before {
     content: '';
     position: absolute;
@@ -123,20 +127,18 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, 
-      var(--gradient-start) 0%, 
-      var(--gradient-middle) 25%, 
-      var(--gradient-end) 50%, 
-      var(--gradient-accent) 75%, 
-      var(--gradient-start) 100%);
-    opacity: 0.1;
+    background: linear-gradient(45deg,
+      var(--gradient-start) 0%,
+      var(--gradient-middle) 50%,
+      var(--gradient-end) 100%);
+    opacity: 0.04;
     pointer-events: none;
     animation: gradientShift 8s ease-in-out infinite;
   }
 
   @keyframes gradientShift {
-    0%, 100% { opacity: 0.1; transform: translateX(0%); }
-    50% { opacity: 0.2; transform: translateX(10%); }
+    0%, 100% { opacity: 0.04; transform: translateX(0%); }
+    50% { opacity: 0.07; transform: translateX(6%); }
   }
 }
 
